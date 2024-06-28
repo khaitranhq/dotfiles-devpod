@@ -7,7 +7,7 @@ ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
 ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
 ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
 cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
-cp -r "$PWD/ohmyposh" "$HOME"/.local/share
+cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
 # Install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -45,6 +45,7 @@ done
 # Change default shell to fish
 fish_directory=$(which fish)
 echo $fish_directory | sudo tee -a /etc/shells
-sudo chsh -s $fish_directory
+echo $fish_directory
+# sudo chsh -s $fish_directory
 
 echo "All packages from the setup script have been installed."
