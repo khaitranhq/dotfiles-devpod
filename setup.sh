@@ -10,14 +10,7 @@ cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
 cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
 # Install fish
-sudo apt-add-repository ppa:fish-shell/release-3
-sudo apt update
-sudo apt install fish -y
-fish_directory=$(which fish)
-echo $fish_directory
-echo $fish_directory | sudo tee -a /etc/shells
-sudo chsh -s $fish_directory
-
+/bin/bash "$PWD"/install_fish.sh
 
 # # Install homebrew
 # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
