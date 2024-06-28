@@ -1,0 +1,23 @@
+#!/bin/bash
+
+export XDG_CONFIG_HOME="$HOME"/.config
+mkdir -p "$XDG_CONFIG_HOME"
+
+ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
+
+ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
+#
+# packages=(
+# 	fd
+# 	ripgrep
+# 	npm
+# 	lazygit
+# 	kubectl
+# )
+#
+# for package in "${packages[@]}"; do
+# 	echo "Installing $package..."
+# 	apt install "$package" -y
+# done
+#
+# echo "All packages from the setup script have been installed."
