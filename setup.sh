@@ -9,8 +9,15 @@ ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
 cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
 cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
-sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
+# Install fish
+sudo apt-add-repository ppa:fish-shell/release-3
+sudo apt update
+sudo apt install fish
 
+fish_directory=$(which fish)
+echo $fish_directory | sudo tee -a /etc/shells
+sudo chsh -s $fish_directory
+sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
 # Install fish
 # sudo /bin/bash "$PWD"/install_fish.sh
 

@@ -3,7 +3,6 @@ if status is-interactive
 end
 
 # alias v="nvim"
-# alias apt='sudo nala'
 # alias fd='fdfind'
 # alias l='exa -lah --icons'
 # alias ssh='kitten ssh'
