@@ -3,12 +3,6 @@
 export XDG_CONFIG_HOME="$HOME"/.config
 mkdir -p "$XDG_CONFIG_HOME"
 
-ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
-ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
-ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
-cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
-cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
-
 # Install fish
 sudo /bin/bash "$PWD"/install_fish.sh
 
@@ -18,8 +12,13 @@ sudo chsh -s $fish_directory
 sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
 
 # Oh my posh
-curl -s https://ohmyposh.dev/install.sh | bash -s
+curl -s https://ohmyposh.dev/install.sh | bash -s ~/.local/bin
 
+ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
+ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
+ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
+cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
+cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
 # # Install homebrew
 # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
