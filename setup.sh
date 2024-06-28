@@ -9,6 +9,9 @@ ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
 cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
 cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
+sudo apt install software-properties-common-y
+
+
 # Install fish
 sudo apt-add-repository ppa:fish-shell/release-3
 sudo apt update
