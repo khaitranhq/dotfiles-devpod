@@ -12,7 +12,7 @@ sudo chsh -s $fish_directory
 sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
 
 # Oh my posh
-curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$PWD"/.local/bin
+curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$HOME"/.local/bin
 
 ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
 ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
