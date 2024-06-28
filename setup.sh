@@ -17,6 +17,10 @@ echo $fish_directory | sudo tee -a /etc/shells
 sudo chsh -s $fish_directory
 sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
 
+# Oh my posh
+curl -s https://ohmyposh.dev/install.sh | bash -s
+
+
 # # Install homebrew
 # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 # (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/$USER/.bashrc
