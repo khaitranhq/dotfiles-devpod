@@ -13,17 +13,19 @@ ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 sudo apt install build-essential -y
 brew -h
-# packages=(
-# 	fd
-# 	ripgrep
-# 	npm
-# 	lazygit
-# 	kubectl
-# )
-#
-# for package in "${packages[@]}"; do
-# 	echo "Installing $package..."
-# 	apt install "$package" -y
-# done
-#
-# echo "All packages from the setup script have been installed."
+
+packages=(
+	fd
+	ripgrep
+	npm
+	lazygit
+	kubectl
+  neovim
+)
+
+for package in "${packages[@]}"; do
+	echo "Installing $package..."
+	apt install "$package" -y
+done
+
+echo "All packages from the setup script have been installed."
