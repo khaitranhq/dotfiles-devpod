@@ -14,6 +14,8 @@ cp -r "$PWD/ohmyposh" "$HOME"/.local/share
 (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/$USER/.bashrc
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
+echo 'export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin' | sudo tee -a /etc/environment
+
 sudo apt update
 sudo apt install build-essential -y
 
@@ -24,13 +26,13 @@ then
 fi
 
 packages=(
-	fd
-	ripgrep
-	npm
-	lazygit
-	kubectl
-  neovim
-  zoxide
+	# fd
+	# ripgrep
+	# npm
+	# lazygit
+	# kubectl
+ #  neovim
+ #  zoxide
   fish
   # oh-my-posh
 )
@@ -41,7 +43,8 @@ for package in "${packages[@]}"; do
 done
 
 # Change default shell to fish
-echo /usr/local/bin/fish | sudo tee -a /etc/shells
-chsh -s /usr/local/bin/fish
+fish_directory=$(which fish)
+echo $fish_directory | sudo tee -a /etc/shells
+sudo chsh -s $fish_directory
 
 echo "All packages from the setup script have been installed."
