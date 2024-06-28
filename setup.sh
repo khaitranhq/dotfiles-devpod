@@ -10,17 +10,12 @@ cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
 cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
 # Install fish
-echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/3/Debian_12/ /' | sudo tee /etc/apt/sources.list.d/shells:fish:release:3.list
-curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:3/Debian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/shells_fish_release_3.gpg > /dev/null
-sudo apt update
-sudo apt install fish -y
+sudo /bin/bash "$PWD"/install_fish.sh
 
 fish_directory=$(which fish)
 echo $fish_directory | sudo tee -a /etc/shells
 sudo chsh -s $fish_directory
 sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
-# Install fish
-# sudo /bin/bash "$PWD"/install_fish.sh
 
 # # Install homebrew
 # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
