@@ -2,6 +2,7 @@
 
 export XDG_CONFIG_HOME="$HOME"/.config
 mkdir -p "$XDG_CONFIG_HOME"
+mkdir -p "$HOME"/.local/bin
 
 # Install fish
 sudo /bin/bash "$PWD"/install_fish.sh
