@@ -12,6 +12,7 @@ ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
 (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/$USER/.bashrc
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 sudo apt install build-essential -y
+brew -h
 # packages=(
 # 	fd
 # 	ripgrep
