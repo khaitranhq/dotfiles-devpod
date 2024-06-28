@@ -10,7 +10,7 @@ cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
 cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
 # Install fish
-/bin/bash "$PWD"/install_fish.sh
+sudo /bin/bash "$PWD"/install_fish.sh
 
 # # Install homebrew
 # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
