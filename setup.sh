@@ -7,7 +7,10 @@ ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
 
 ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
 
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Install homebrew
+(echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/$USER/.bashrc
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+sudo apt install build-essential -y
 # packages=(
 # 	fd
 # 	ripgrep
