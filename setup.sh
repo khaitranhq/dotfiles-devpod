@@ -7,6 +7,8 @@ mkdir -p "$XDG_CONFIG_HOME"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/$USER/.bashrc
 
+source ~/.bashrc
+
 sudo apt update
 sudo apt install build-essential -y
 
