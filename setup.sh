@@ -4,7 +4,7 @@ export XDG_CONFIG_HOME="$HOME"/.config
 mkdir -p "$XDG_CONFIG_HOME"
 
 sudo apt update
-sudo apt install build-essential -y
+sudo apt install build-essential exa -y
 
 sudo bash "$PWD"/install_fish.sh
 fish_directory=$(which fish)
@@ -31,10 +31,11 @@ packages=(
   neovim
 	npm
 	lazygit
-  exa
   jandedobbeleer/oh-my-posh/oh-my-posh
   fzf
   zoxide
+  tmux
+  nvm
 )
 
 for package in "${packages[@]}"; do
@@ -48,14 +49,5 @@ ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
 cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
 cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
+echo "All packages from the setup script have been installed."
 exit 0
-#
-# source "$HOME"/.bashrc
-#
-# # Change default shell to fish
-# fish_directory=$(which fish)
-# echo $fish_directory | sudo tee -a /etc/shells
-# echo $fish_directory
-# sudo chsh -s $fish_directory
-#
-# echo "All packages from the setup script have been installed."
