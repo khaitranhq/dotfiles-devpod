@@ -21,8 +21,7 @@ alias fd='fdfind'
 alias l='exa -lah --icons'
 alias lg='lazygit'
 alias randompass="cat /dev/random | tr -dc '[:alnum:]' | head -c 40 | xsel -b"
-# alias t='tmux'
-# alias y='yazi'
+alias t='tmux'
 alias his='history | fzf'
 
 # Disable Fish Greeting
