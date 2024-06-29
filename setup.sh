@@ -43,11 +43,16 @@ for package in "${packages[@]}"; do
 	brew install "$package"
 done
 
+TMUX_PLUGIN_MANAGER_PATH="$HOME"/.tmux/plugins
+mkdir -p $TMUX_PLUGIN_MANAGER_PATH
+git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_MANAGER_PATH"/tpm
+
 ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
 ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
 ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
 cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
 cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
+
 
 echo "All packages from the setup script have been installed."
 exit 0
