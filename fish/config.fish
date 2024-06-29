@@ -2,23 +2,18 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-# alias v="nvim"
-# alias fd='fdfind'
-# alias l='exa -lah --icons'
-# alias ssh='kitten ssh'
-# alias bat="batcat"
-# alias tf='terraform'
-# alias ld='lazydocker'
-# alias lg='lazygit'
-# alias randompass="cat /dev/random | tr -dc '[:alnum:]' | head -c 40 | xsel -b"
+alias exit='exit 0'
+alias v="nvim"
+alias fd='fdfind'
+alias l='exa -lah --icons'
+alias lg='lazygit'
+alias randompass="cat /dev/random | tr -dc '[:alnum:]' | head -c 40 | xsel -b"
 # alias t='tmux'
 # alias y='yazi'
-# alias his='history | fzf'
-# alias dps='devpod ssh'
-# alias dpu='devpod up'
-#
-# # Disable Fish Greeting
-# set -g fish_greeting
+alias his='history | fzf'
+
+# Disable Fish Greeting
+set -g fish_greeting
 #
 # export KUBE_EDITOR="nvim"
 #
