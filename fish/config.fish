@@ -2,7 +2,18 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+if test -d /home/linuxbrew/.linuxbrew # Linux
+	set -gx HOMEBREW_PREFIX "/home/linuxbrew/.linuxbrew"
+	set -gx HOMEBREW_CELLAR "$HOMEBREW_PREFIX/Cellar"
+	set -gx HOMEBREW_REPOSITORY "$HOMEBREW_PREFIX/Homebrew"
+else if test -d /opt/homebrew # MacOS
+	set -gx HOMEBREW_PREFIX "/opt/homebrew"
+	set -gx HOMEBREW_CELLAR "$HOMEBREW_PREFIX/Cellar"
+	set -gx HOMEBREW_REPOSITORY "$HOMEBREW_PREFIX/homebrew"
+end
+fish_add_path -gP "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin";
+! set -q MANPATH; and set MANPATH ''; set -gx MANPATH "$HOMEBREW_PREFIX/share/man" $MANPATH;
+! set -q INFOPATH; and set INFOPATH ''; set -gx INFOPATH "$HOMEBREW_PREFIX/share/info" $INFOPATH;
 
 alias exit='exit 0'
 alias v="nvim"
@@ -16,15 +27,9 @@ alias his='history | fzf'
 
 # Disable Fish Greeting
 set -g fish_greeting
-#
-# export KUBE_EDITOR="nvim"
-#
-# fish_add_path $HOME/.local/bin
-# fish_add_path $HOME/.local/share/nvim/mason/bin
-# fish_add_path $HOME/.krew/bin
-#
+
 oh-my-posh init fish --config "$HOME/.config/ohmyposh/jandedobbeleer.omp.json" | source
-# zoxide init fish | source
+zoxide init fish | source
 #
 # function fish_user_key_bindings
 #   # ctrl-del

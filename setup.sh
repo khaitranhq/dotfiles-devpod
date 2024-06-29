@@ -6,6 +6,12 @@ mkdir -p "$XDG_CONFIG_HOME"
 sudo apt update
 sudo apt install build-essential -y
 
+sudo bash "$PWD"/install_fish.sh
+fish_directory=$(which fish)
+echo $fish_directory | sudo tee -a /etc/shells
+sudo chsh -s $fish_directory
+sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
+
 # Install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> $HOME/.bashrc
@@ -25,8 +31,8 @@ packages=(
   neovim
 	npm
 	lazygit
-  fish
   exa
+  jandedobbeleer/oh-my-posh/oh-my-posh
   fzf
   zoxide
 )
@@ -35,12 +41,6 @@ for package in "${packages[@]}"; do
 	echo "Installing $package..."
 	brew install "$package"
 done
-
-fish_directory=$(which fish)
-echo $fish_directory | sudo tee -a /etc/shells
-sudo chsh -s $fish_directory
-sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
-
 
 ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
 ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
