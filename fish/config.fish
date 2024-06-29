@@ -26,7 +26,7 @@ end
 # fish_add_path $HOME/.local/share/nvim/mason/bin
 # fish_add_path $HOME/.krew/bin
 #
-oh-my-posh init fish --config "$HOME/.local/config/ohmyposh/jandedobbeleer.omp.json" | source
+oh-my-posh init fish --config "$HOME/.config/ohmyposh/jandedobbeleer.omp.json" | source
 # zoxide init fish | source
 #
 # function fish_user_key_bindings
