@@ -2,7 +2,6 @@
 
 export XDG_CONFIG_HOME="$HOME"/.config
 mkdir -p "$XDG_CONFIG_HOME"
-mkdir -p "$HOME"/.local/bin
 
 # Install fish
 sudo /bin/bash "$PWD"/install_fish.sh
@@ -13,7 +12,7 @@ sudo chsh -s $fish_directory
 sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
 
 # Oh my posh
-curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$HOME"/.local/bin
+curl -s https://ohmyposh.dev/install.sh | sudo bash -s
 
 ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
 ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
