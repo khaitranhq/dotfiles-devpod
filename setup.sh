@@ -57,5 +57,5 @@ cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 npm install -g @negoziator/ai-commit
 
 echo "All packages from the setup script have been installed."
-echo "Next steps: Remote to container, setup OPENAI key and CODIUM key"
+echo "Next steps: Remote to container, setup OPENAI key and CODEIUM key"
 exit 0
