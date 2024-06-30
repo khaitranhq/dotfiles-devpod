@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Whoami: $USER"
+
 export XDG_CONFIG_HOME="$HOME"/.config
 mkdir -p "$XDG_CONFIG_HOME"
 
