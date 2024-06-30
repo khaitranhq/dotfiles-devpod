@@ -8,12 +8,6 @@ mkdir -p "$XDG_CONFIG_HOME"
 sudo apt update
 sudo apt install build-essential exa -y
 
-sudo bash "$PWD"/install_fish.sh
-fish_directory=$(which fish)
-echo $fish_directory | sudo tee -a /etc/shells
-sudo chsh -s $fish_directory
-sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
-
 # Install homebrew
 curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sudo /bin/bash
 (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> $HOME/.bashrc
@@ -55,6 +49,11 @@ ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
 cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
 cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
+sudo bash "$PWD"/install_fish.sh
+fish_directory=$(which fish)
+echo $fish_directory | sudo tee -a /etc/shells
+sudo chsh -s $fish_directory
+sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
 
 echo "All packages from the setup script have been installed."
 exit 0
