@@ -37,7 +37,6 @@ packages=(
   fzf
   zoxide
   tmux
-  nvm
 )
 
 for package in "${packages[@]}"; do
@@ -55,6 +54,8 @@ ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
 cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
 cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
+npm install -g @negoziator/ai-commit
 
 echo "All packages from the setup script have been installed."
+echo "Next steps: Remote to container, setup OPENAI key and CODIUM key"
 exit 0
