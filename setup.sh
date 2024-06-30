@@ -15,7 +15,7 @@ sudo chsh -s $fish_directory
 sudo sed -i "\$s/.*/$USER:x:1000:1000::\/home\/$USER:\/usr\/bin\/fish/" /etc/passwd
 
 # Install homebrew
-curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sudo /bin/bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> $HOME/.bashrc
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 source "$HOME"/.bashrc
