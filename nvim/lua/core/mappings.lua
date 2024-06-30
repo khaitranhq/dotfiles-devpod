@@ -19,10 +19,12 @@ M.general = {
             end,
             "Show directory of current buffer"
         },
-        ["<leader>/"] = {"<cmd>nohlsearch<CR>", "Disable search highlight"}
+        ["<leader>/"] = {"<cmd>nohlsearch<CR>", "Disable search highlight"},
+        ["p"] = {'"+p', "Paste"}
     },
     v = {
-        ["//"] = {'y/\\V<C-R>=escape(@",\'/\')<CR><CR>', "Search with selected text"}
+        ["//"] = {'y/\\V<C-R>=escape(@",\'/\')<CR><CR>', "Search with selected text"},
+        ["y"] = {'"+y', "Yank"}
     }
 }
 
