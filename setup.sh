@@ -12,7 +12,7 @@ sudo bash "$PWD"/install_fish.sh
 fish_directory=$(which fish)
 echo $fish_directory | sudo tee -a /etc/shells
 sudo chsh -s $fish_directory
-sudo sed -i '$s/.*/node:x:1000:1000::\/home\/node:\/usr\/bin\/fish/' /etc/passwd
+sudo sed -i "\$s/.*/$USER:x:1000:1000::\/home\/$USER:\/usr\/bin\/fish/" /etc/passwd
 
 # # Install homebrew
 # curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sudo /bin/bash
