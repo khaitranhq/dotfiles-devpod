@@ -58,4 +58,6 @@ npm install -g @negoziator/ai-commit
 
 echo "All packages from the setup script have been installed."
 echo "Next steps: Remote to container, setup OPENAI key and CODEIUM key"
+echo ' - set export OPENAI_API_KEY="sk-..." in ~/.config/fish/config.sh'
+echo ' - set {"api_key": "key....."} in ~/.cache/nvim/codeium/config.json'
 exit 0
