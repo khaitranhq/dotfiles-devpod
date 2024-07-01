@@ -57,6 +57,7 @@ cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
 cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
 npm install -g @negoziator/ai-commit
+aicommit config set auto-confirm=true
 
 echo "All packages from the setup script have been installed."
 echo "Next steps: Remote to container, setup OPENAI key and CODEIUM key"
