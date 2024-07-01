@@ -60,7 +60,7 @@ fi
 # ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
 # ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
 # cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
-# ln -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
+# ln -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"/ohmyposh
 #
 # # Install aicommit
 # npm install -g @negoziator/ai-commit
