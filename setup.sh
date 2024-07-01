@@ -44,7 +44,8 @@ for package in "${packages[@]}"; do
 	brew install "$package"
 done
 
-npm i -g lua-fmt prettier
+# Disable symbolic link for node
+brew unlink node
 
 TMUX_PLUGIN_MANAGER_PATH="$HOME"/.tmux/plugins
 mkdir -p $TMUX_PLUGIN_MANAGER_PATH
@@ -56,6 +57,7 @@ ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
 cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
 cp -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
 
+# Install aicommit
 npm install -g @negoziator/ai-commit
 aicommit config set auto-confirm=true
 
