@@ -34,17 +34,3 @@ function fish_user_key_bindings
   # ctrl-del
   bind \e\[3\;5~ kill-word
 end
-
-function __check_nvm --on-variable PWD --description 'Do nvm stuff'
-  if test -f .nvmrc
-    set node_version_target (cat .nvmrc)
-    set nvm_node_versions (nvm list)
-
-    if string match -q "*$node_version_target*" $nvm_node_versions
-      nvm use $node_version_target --silent
-    else 
-      nvm install $node_version_target --silent
-    end
-  end
-end
-__check_nvm
