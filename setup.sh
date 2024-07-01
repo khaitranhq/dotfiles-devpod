@@ -26,24 +26,24 @@ then
     exit 1
 fi
 
-# Install packages
-packages=(
-	fd
-	ripgrep
-  neovim
-	lazygit
-  jandedobbeleer/oh-my-posh/oh-my-posh
-  fzf
-  zoxide
-  tmux
-  luarocks
-  git-delta
-)
-
-for package in "${packages[@]}"; do
-	echo "Installing $package..."
-	brew install "$package"
-done
+# # Install packages
+# packages=(
+# 	fd
+# 	ripgrep
+#   neovim
+# 	lazygit
+#   jandedobbeleer/oh-my-posh/oh-my-posh
+#   fzf
+#   zoxide
+#   tmux
+#   luarocks
+#   git-delta
+# )
+#
+# for package in "${packages[@]}"; do
+# 	echo "Installing $package..."
+# 	brew install "$package"
+# done
 
 # Install node if devcontianer not installed node
 if ! command -v node -v &> /dev/null
@@ -52,23 +52,23 @@ then
   brew install node
 fi
 
-TMUX_PLUGIN_MANAGER_PATH="$HOME"/.tmux/plugins
-mkdir -p $TMUX_PLUGIN_MANAGER_PATH
-git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_MANAGER_PATH"/tpm
-
-ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
-ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
-ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
-cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
-ln -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
-
-# Install aicommit
-npm install -g @negoziator/ai-commit
-aicommit config set auto-confirm=true
-aicommit config set type=conventional
-
-echo "All packages from the setup script have been installed."
-echo "Next steps: Remote to container, setup OPENAI key and CODEIUM key"
-echo " - echo 'export OPENAI_API_KEY=\"sk-...\"' >>  ~/.config/fish/config.sh"
-echo " - echo '{\"api_key\": \"key.....\"}' >> ~/.cache/nvim/codeium/config.json"
-exit 0
+# TMUX_PLUGIN_MANAGER_PATH="$HOME"/.tmux/plugins
+# mkdir -p $TMUX_PLUGIN_MANAGER_PATH
+# git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_MANAGER_PATH"/tpm
+#
+# ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
+# ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
+# ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
+# cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
+# ln -r "$PWD/ohmyposh" "$XDG_CONFIG_HOME"
+#
+# # Install aicommit
+# npm install -g @negoziator/ai-commit
+# aicommit config set auto-confirm=true
+# aicommit config set type=conventional
+#
+# echo "All packages from the setup script have been installed."
+# echo "Next steps: Remote to container, setup OPENAI key and CODEIUM key"
+# echo " - echo 'export OPENAI_API_KEY=\"sk-...\"' >>  ~/.config/fish/config.sh"
+# echo " - echo '{\"api_key\": \"key.....\"}' >> ~/.cache/nvim/codeium/config.json"
+# exit 0
