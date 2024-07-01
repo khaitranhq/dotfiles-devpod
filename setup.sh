@@ -44,7 +44,7 @@ for package in "${packages[@]}"; do
 	brew install "$package"
 done
 
-npm i -g luafmt prettier
+npm i -g lua-fmt prettier
 
 TMUX_PLUGIN_MANAGER_PATH="$HOME"/.tmux/plugins
 mkdir -p $TMUX_PLUGIN_MANAGER_PATH
