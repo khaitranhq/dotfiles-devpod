@@ -31,7 +31,6 @@ packages=(
 	fd
 	ripgrep
   neovim
-	npm
 	lazygit
   jandedobbeleer/oh-my-posh/oh-my-posh
   fzf
@@ -46,8 +45,12 @@ for package in "${packages[@]}"; do
 	brew install "$package"
 done
 
-# Disable symbolic link for node
-brew unlink node
+# Install node if devcontianer not installed node
+if ! command -v node -v &> /dev/null
+then
+  echo "Installing node & npm..."
+  brew install node
+fi
 
 TMUX_PLUGIN_MANAGER_PATH="$HOME"/.tmux/plugins
 mkdir -p $TMUX_PLUGIN_MANAGER_PATH
