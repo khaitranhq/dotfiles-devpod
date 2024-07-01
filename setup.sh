@@ -37,6 +37,8 @@ packages=(
   fzf
   zoxide
   tmux
+  luarocks
+  git-delta
 )
 
 for package in "${packages[@]}"; do
