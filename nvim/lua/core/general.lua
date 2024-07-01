@@ -22,6 +22,7 @@ vim.g.clipboard = {
     ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
   },
 }
+-- opt.clipboard = "unnamed,unnamedplus"
 
 -- set termguicolors to enable highlight groups
 opt.termguicolors = true
@@ -31,7 +32,7 @@ opt.foldmethod = "indent"
 opt.foldlevel = 20
 
 -- set undodir
-UNDODIR = os.getenv('HOME') .. "/.local/share/nvim/undo/"
+UNDODIR = "/home/lewis/.local/share/nvim/undo/"
 if vim.fn.isdirectory(UNDODIR) == 0 then
 	vim.fn.mkdir(UNDODIR, "p", "0o700")
 end

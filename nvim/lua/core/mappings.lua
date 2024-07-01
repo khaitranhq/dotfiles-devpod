@@ -24,7 +24,9 @@ M.general = {
     },
     v = {
         ["//"] = {'y/\\V<C-R>=escape(@",\'/\')<CR><CR>', "Search with selected text"},
-        ["y"] = {'"+y', "Yank"}
+        ["y"] = {'"+y', "Yank"},
+        ["d"] = {'"+d', "Cut"},
+        ["x"] = {'"+x', "Cut single character"}
     }
 }
 
@@ -100,19 +102,19 @@ M.window_picket = {
 }
 
 M.leap = {
-	n = {
-		["s"] = {"<Plug>(leap)", "Navigate with leap"}
-	}
+    n = {
+        ["s"] = {"<Plug>(leap)", "Navigate with leap"}
+    }
 }
 
 M.dap = {
-  n = {
-    ["<leader>ss"] = {vim.cmd.DapContinue, "Run or continue"},
-    ["<leader>sn"] = {vim.cmd.DapStepOver, "Step over"},
-    ["<leader>st"] = {vim.cmd.DapTerminate, "Terminate debug session"},
-    ["<leader>sb"] = {vim.cmd.DapToggleBreakpoint, "Toggle breakpoint"},
-    ["<leader>sc"] = {require('dapui').close, "Close debug ui"}
-  }
+    n = {
+        ["<leader>ss"] = {vim.cmd.DapContinue, "Run or continue"},
+        ["<leader>sn"] = {vim.cmd.DapStepOver, "Step over"},
+        ["<leader>st"] = {vim.cmd.DapTerminate, "Terminate debug session"},
+        ["<leader>sb"] = {vim.cmd.DapToggleBreakpoint, "Toggle breakpoint"},
+        ["<leader>sc"] = {require("dapui").close, "Close debug ui"}
+    }
 }
 
 return M
