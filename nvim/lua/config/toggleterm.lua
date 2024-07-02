@@ -21,7 +21,7 @@ function vim.term_aicommits_toggle()
     local aicommits =
         Terminal:new(
         {
-            cmd = "aicommit --all",
+            cmd = "aicommit",
             hidden = true,
             direction = "float",
             close_on_exit = false
