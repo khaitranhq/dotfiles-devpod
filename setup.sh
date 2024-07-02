@@ -67,8 +67,6 @@ npm install -g @negoziator/ai-commit
 aicommit config set auto-confirm=true
 aicommit config set type=conventional
 
-eval (ssh-agent -c)
-
 echo "All packages from the setup script have been installed."
 echo "Next steps: Remote to container, setup OPENAI key and CODEIUM key"
 echo " - echo 'export OPENAI_API_KEY=\"sk-...\"' >>  ~/.config/fish/config.sh"
