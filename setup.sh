@@ -6,7 +6,7 @@ export XDG_CONFIG_HOME="$HOME"/.config
 mkdir -p "$XDG_CONFIG_HOME"
 
 sudo apt update
-sudo apt install build-essential exa python3-pip -y
+sudo apt install build-essential exa python3-pip python3-venv -y
 
 sudo bash "$PWD"/install_fish.sh
 fish_directory=$(which fish)
