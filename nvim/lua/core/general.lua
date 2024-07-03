@@ -39,6 +39,10 @@ end
 vim.opt.undodir = UNDODIR
 vim.opt.undofile = true
 
+-- set spell check
+vim.opt.spelllang = 'en_us'
+vim.opt.spell = true
+
 -------------------------global-------------------------
 vim.g.mapleader = " "
 
