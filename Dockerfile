@@ -35,7 +35,7 @@ ENV BREW_BIN_DIRECTORY=/home/linuxbrew/.linuxbrew/bin
 
 # Install node
 RUN if ! [ -x "$(command -v node)" ]; then \
-      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"; \
+      eval "$(${BREW_BIN_DIRECTORY}/brew shellenv)"; \
       brew install node; \
       npm install -g @negoziator/ai-commit; \
     fi
