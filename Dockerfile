@@ -31,9 +31,8 @@ ENV BREW_DIRECTORY=/home/linuxbrew/.linuxbrew/bin/brew
 RUN echo "fd ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zoxide tmux luarocks git-delta " > packages.txt
 RUN ${BREW_DIRECTORY} install $(cat packages.txt)
 
-RUN if ! command -v node -v &> /dev/null \
-    then \
-      brew install node \
+RUN if ! command -v node -v &> /dev/null; then \
+      brew install node; \
     fi
 
 # Setup TPM
