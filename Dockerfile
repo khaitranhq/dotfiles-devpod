@@ -30,7 +30,7 @@ RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/instal
 ENV BREW_DIRECTORY=/home/linuxbrew/.linuxbrew/bin/brew
 
 # Install node
-RUN if ! command -v node -v &> /dev/null; then \
+RUN if ! [ -x "$(command -v node)" ]; then \
       ${BREW_DIRECTORY} install node; \
     fi
 
