@@ -11,8 +11,6 @@ RUN which fish > fish_directory.txt
 RUN cat /tmp/fish_directory.txt | sudo tee -a /etc/shells
 RUN chsh -s "$(cat /tmp/fish_directory.txt)"
 
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
 # Create user
 ARG USER
 ENV USER=${USER}
@@ -20,7 +18,7 @@ ENV HOME=/home/${USER}
 ENV XDG_CONFIG_HOME=${HOME}/.config
 
 RUN useradd -ms /bin/fish "$USER"
-RUN adduser "$USER" sudo
+RUN adduser "$USER" root
 
 USER ${USER}
 
