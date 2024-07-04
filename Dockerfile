@@ -30,8 +30,9 @@ ENV BREW_DIRECTORY=/home/linuxbrew/.linuxbrew/bin/brew
 
 # Install node
 RUN if ! [ -x "$(command -v node)" ]; then \
-      setfacl -R -m u:${USER}:rwx /usr/local/share/npm-global; \
       ${BREW_DIRECTORY} install node; \
+    else \
+      setfacl -R -m u:${USER}:rwx /usr/local/share/npm-global; \
     fi
 
 # Install aicommit
