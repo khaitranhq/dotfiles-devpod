@@ -35,14 +35,14 @@ ENV BREW_BIN_DIRECTORY=/home/linuxbrew/.linuxbrew/bin
 
 # Install node
 RUN if ! [ -x "$(command -v node)" ]; then \
-      ${BREW_BIN_DIRECTORY}/brew install node; \
-      ${BREW_BIN_DIRECTORY}/npm install -g @negoziator/ai-commit; \
+      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"; \
+      brew install node; \
+      npm install -g @negoziator/ai-commit; \
     fi
 
 # Install other packages
 RUN echo "fd ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zoxide tmux luarocks git-delta " > packages.txt
 RUN ${BREW_BIN_DIRECTORY}/brew install $(cat packages.txt)
-
 
 # Setup TPM
 ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
@@ -59,3 +59,7 @@ COPY lazygit lazygit
 COPY fish fish
 COPY ohmyposh ohmyposh
 
+ENV SHELL /usr/bin/fish
+ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
+
+ENTRYPOINT [ "fish" ]
