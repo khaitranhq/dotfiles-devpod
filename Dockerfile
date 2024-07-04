@@ -2,9 +2,8 @@ ARG SOURCE_IMAGE
 FROM ${SOURCE_IMAGE}
 RUN apt update && apt install build-essential exa python3-pip python3-venv acl -y
 
-WORKDIR /tmp
-
 # Install fish
+WORKDIR /tmp
 COPY install_fish.sh .
 RUN bash /tmp/install_fish.sh
 RUN which fish > fish_directory.txt
@@ -17,8 +16,6 @@ RUN cat /etc/sudoers
 # Create user
 ARG USER
 ENV USER=${USER}
-ENV HOME=/home/${USER}
-ENV XDG_CONFIG_HOME=${HOME}/.config
 
 RUN useradd -ms /bin/fish "$USER"
 RUN usermod -aG sudo "$USER"
@@ -46,6 +43,7 @@ RUN echo "fd ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zox
 RUN ${BREW_BIN_DIRECTORY}/brew install $(cat packages.txt)
 
 # Setup TPM
+ENV HOME=/home/${USER}
 ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
 RUN mkdir -p ${TMUX_PLUGIN_MANAGER_PATH}
 RUN git clone https://github.com/tmux-plugins/tpm
@@ -54,6 +52,7 @@ RUN git clone https://github.com/tmux-plugins/tpm
 WORKDIR ${HOME}
 COPY .tmux.conf .aicommit ./
 
+ENV XDG_CONFIG_HOME=${HOME}/.config
 WORKDIR ${XDG_CONFIG_HOME}
 COPY nvim nvim
 COPY lazygit lazygit
@@ -61,8 +60,4 @@ COPY fish fish
 COPY ohmyposh ohmyposh
 
 RUN sudo chown -R ${USER}: ${HOME}
-
-ENV SHELL=/usr/bin/fish
-ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
-
-ENTRYPOINT [ "fish" ]
+RUN mkdir -p ${HOME}/.local/share
