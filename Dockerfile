@@ -37,15 +37,18 @@ RUN if ! command -v node -v &> /dev/null; then \
 
 # Setup TPM
 ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
-RUN Ikdir -p $TMUX_PLUGIN_MANAGER_PATH
-RUN git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_MANAGER_PATH"/tpm
+WORKDIR ${TMUX_PLUGIN_MANAGER_PATH}
+RUN git clone https://github.com/tmux-plugins/tpm
 
 # Copy configuration
-COPY nvim ${XDG_CONFIG_HOME}/nvim
-COPY .tmux.conf "$HOME"
-COPY lazygit "$XDG_CONFIG_HOME"/lazygit
-COPY fish "$XDG_CONFIG_HOME"
-COPY ohmyposh "$XDG_CONFIG_HOME"/ohmyposh
+WORKDIR ${HOME}
+COPY .tmux.conf .
+
+WORKDIR ${XDG_CONFIG_HOME}
+COPY nvim nvim
+COPY lazygit lazygit
+COPY fish fish
+COPY ohmyposh ohmyposh
 
 # Install aicommit
 RUN npm install -g @negoziator/ai-commit
