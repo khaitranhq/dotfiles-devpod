@@ -30,21 +30,19 @@ USER ${USER}
 
 # Install HomeBrew
 RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-ENV BREW_DIRECTORY=/home/linuxbrew/.linuxbrew/bin/brew
+ENV BREW_BIN_DIRECTORY=/home/linuxbrew/.linuxbrew/bin
 
 # Install node
 RUN if ! [ -x "$(command -v node)" ]; then \
-      ${BREW_DIRECTORY} install node; \
+      ${BREW_DIRECTORY}/brew install node; \
     fi
 
 # Install aicommit
-RUN npm install -g @negoziator/ai-commit
-RUN aicommit config set auto-confirm=true
-RUN aicommit config set type=conventional
+RUN ${BREW_BIN_DIRECTORY}/npm install -g @negoziator/ai-commit
 
 # Install other packages
 RUN echo "fd ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zoxide tmux luarocks git-delta " > packages.txt
-RUN ${BREW_DIRECTORY} install $(cat packages.txt)
+RUN ${BREW_DIRECTORY}/brew install $(cat packages.txt)
 
 
 # Setup TPM
@@ -54,7 +52,7 @@ RUN git clone https://github.com/tmux-plugins/tpm
 
 # Copy configuration
 WORKDIR ${HOME}
-COPY .tmux.conf .
+COPY .tmux.conf .aicommit ./
 
 WORKDIR ${XDG_CONFIG_HOME}
 COPY nvim nvim
