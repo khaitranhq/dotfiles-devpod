@@ -29,7 +29,7 @@ jobs:
       - name: get image tag
         run: |
           SOURCE_IMAGE_TAG="{{ matrix.image }}"
-          echo "IMAGE_TAG=${SOURCE_IMAGE_TAG/":""/"-"}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${SOURCE_IMAGE_TAG}/':'/'-'" >> $GITHUB_ENV
 
       - name: build and push
         uses: docker/build-push-action@v5
@@ -39,7 +39,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ env.GITHUB_USERNAME }}/devcontainer:${{ env.IMAGE_TAG }}
           build-args: |
-            SOURCE_IMAGE=${{ matrix.value }}
+            SOURCE_IMAGE=${{ matrix.image }}
             USER=dev
           target: app
           cache-from: type=gha
