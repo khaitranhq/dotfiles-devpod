@@ -22,6 +22,10 @@ ENV XDG_CONFIG_HOME=${HOME}/.config
 RUN useradd -ms /bin/fish "$USER"
 RUN usermod -aG sudo "$USER"
 
+RUN if [ -x "$(command -v node)" ]; then \
+      setfacl -R -m u:${USER}:rwx /usr/local/share/npm-global; \
+    fi
+
 USER ${USER}
 
 # Install HomeBrew
@@ -31,8 +35,6 @@ ENV BREW_DIRECTORY=/home/linuxbrew/.linuxbrew/bin/brew
 # Install node
 RUN if ! [ -x "$(command -v node)" ]; then \
       ${BREW_DIRECTORY} install node; \
-    else \
-      setfacl -R -m u:${USER}:rwx /usr/local/share/npm-global; \
     fi
 
 # Install aicommit
