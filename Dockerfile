@@ -11,7 +11,8 @@ RUN which fish > fish_directory.txt
 RUN cat /tmp/fish_directory.txt | sudo tee -a /etc/shells
 RUN chsh -s "$(cat /tmp/fish_directory.txt)"
 
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN sed -i 's/sudo	ALL=(ALL:ALL) ALL/sudo ALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers
+RUN cat /etc/sudoers
 
 # Create user
 ARG USER
@@ -46,7 +47,7 @@ RUN ${BREW_BIN_DIRECTORY}/brew install $(cat packages.txt)
 
 # Setup TPM
 ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
-WORKDIR ${TMUX_PLUGIN_MANAGER_PATH}
+RUN mkdir -p ${TMUX_PLUGIN_MANAGER_PATH}
 RUN git clone https://github.com/tmux-plugins/tpm
 
 # Copy configuration
@@ -58,6 +59,8 @@ COPY nvim nvim
 COPY lazygit lazygit
 COPY fish fish
 COPY ohmyposh ohmyposh
+
+RUN sudo chown -R ${USER}: ${HOME}
 
 ENV SHELL=/usr/bin/fish
 ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
