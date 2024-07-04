@@ -20,23 +20,29 @@ ENV HOME=/home/${USER}
 ENV XDG_CONFIG_HOME=${HOME}/.config
 
 RUN useradd -ms /bin/fish "$USER"
-RUN adduser "$USER" sudo
+RUN usermod -ag sudo "$USER"
+RUN usermod -aG root "$USER"
 
 USER ${USER}
 
-# Install HomeBrew and packages
+# Install HomeBrew
 RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ENV BREW_DIRECTORY=/home/linuxbrew/.linuxbrew/bin/brew
 
+# Install node
+RUN if ! command -v node -v &> /dev/null; then \
+      ${BREW_DIRECTORY} install node; \
+    fi
+
+# Install aicommit
+RUN npm install -g @negoziator/ai-commit
+RUN aicommit config set auto-confirm=true
+RUN aicommit config set type=conventional
+
+# Install other packages
 RUN echo "fd ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zoxide tmux luarocks git-delta " > packages.txt
 RUN ${BREW_DIRECTORY} install $(cat packages.txt)
 
-RUN if ! command -v node -v &> /dev/null; then \
-      ${BREW_DIRECTORY} install node; \
-      npm install -g @negoziator/ai-commit; \
-    else \
-      sudo npm install -g @negoziator/ai-commit; \
-    fi
 
 # Setup TPM
 ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
@@ -53,6 +59,3 @@ COPY lazygit lazygit
 COPY fish fish
 COPY ohmyposh ohmyposh
 
-# Install aicommit
-RUN aicommit config set auto-confirm=true
-RUN aicommit config set type=conventional
