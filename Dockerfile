@@ -32,7 +32,7 @@ RUN echo "fd ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zox
 RUN ${BREW_DIRECTORY} install $(cat packages.txt)
 
 RUN if ! command -v node -v &> /dev/null; then \
-      brew install node; \
+      ${BREW_DIRECTORY} install node; \
     fi
 
 # Setup TPM
@@ -40,7 +40,7 @@ ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
 RUN Ikdir -p $TMUX_PLUGIN_MANAGER_PATH
 RUN git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_MANAGER_PATH"/tpm
 
-# Copy confiles
+# Copy configuration
 COPY nvim ${XDG_CONFIG_HOME}/nvim
 COPY .tmux.conf "$HOME"
 COPY lazygit "$XDG_CONFIG_HOME"/lazygit
