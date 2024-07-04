@@ -21,7 +21,7 @@ ENV XDG_CONFIG_HOME=${HOME}/.config
 
 RUN useradd -ms /bin/fish "$USER"
 RUN usermod -aG sudo "$USER"
-RUN usermod -aG root "$USER"
+RUN setfacl -R -m u:${USER}:rwx /usr/local/share/npm-global
 
 USER ${USER}
 
