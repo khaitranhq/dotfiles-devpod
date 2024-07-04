@@ -11,6 +11,8 @@ RUN which fish > fish_directory.txt
 RUN cat /tmp/fish_directory.txt | sudo tee -a /etc/shells
 RUN chsh -s "$(cat /tmp/fish_directory.txt)"
 
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 # Create user
 ARG USER
 ENV USER=${USER}
@@ -18,7 +20,7 @@ ENV HOME=/home/${USER}
 ENV XDG_CONFIG_HOME=${HOME}/.config
 
 RUN useradd -ms /bin/fish "$USER"
-RUN adduser "$USER" root
+RUN adduser "$USER" sudo
 
 USER ${USER}
 
@@ -31,6 +33,9 @@ RUN ${BREW_DIRECTORY} install $(cat packages.txt)
 
 RUN if ! command -v node -v &> /dev/null; then \
       ${BREW_DIRECTORY} install node; \
+      npm install -g @negoziator/ai-commit; \
+    else \
+      sudo npm install -g @negoziator/ai-commit; \
     fi
 
 # Setup TPM
@@ -49,6 +54,5 @@ COPY fish fish
 COPY ohmyposh ohmyposh
 
 # Install aicommit
-RUN npm install -g @negoziator/ai-commit
 RUN aicommit config set auto-confirm=true
 RUN aicommit config set type=conventional
