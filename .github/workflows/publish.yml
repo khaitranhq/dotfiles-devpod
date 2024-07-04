@@ -45,6 +45,5 @@ jobs:
           build-args: |
             SOURCE_IMAGE=${{ matrix.image }}
             USER=dev
-          target: app
           cache-from: type=gha
           cache-to: type=gha,mode=max
