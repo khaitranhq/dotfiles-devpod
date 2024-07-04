@@ -20,7 +20,7 @@ ENV HOME=/home/${USER}
 ENV XDG_CONFIG_HOME=${HOME}/.config
 
 RUN useradd -ms /bin/fish "$USER"
-RUN usermod -ag sudo "$USER"
+RUN usermod -aG sudo "$USER"
 RUN usermod -aG root "$USER"
 
 USER ${USER}
