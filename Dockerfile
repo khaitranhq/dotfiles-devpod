@@ -15,7 +15,7 @@ ARG USER
 ENV USER=${USER}
 
 # Change shell of user
-RUN  sed -i "s/\/home\/${USER}:\/bin\/bash/\/home\/${USER}}:\/bin\/fish/" /etc/passwd
+RUN  sed -i "s/\/home\/${USER}:\/bin\/bash/\/home\/${USER}:\/bin\/fish/" /etc/passwd
 
 USER ${USER}
 
