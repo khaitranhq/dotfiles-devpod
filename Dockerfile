@@ -17,14 +17,6 @@ RUN cat /etc/sudoers
 ARG USER
 ENV USER=${USER}
 
-RUN useradd -ms /bin/fish "$USER"
-RUN usermod -aG sudo "$USER"
-
-RUN if [ -x "$(command -v node)" ]; then \
-      setfacl -R -m u:${USER}:rwx /usr/local/share/npm-global; \
-      npm install -g @negoziator/ai-commit; \
-    fi
-
 USER ${USER}
 
 # Install HomeBrew
@@ -35,8 +27,9 @@ ENV BREW_BIN_DIRECTORY=/home/linuxbrew/.linuxbrew/bin
 RUN if ! [ -x "$(command -v node)" ]; then \
       eval "$(${BREW_BIN_DIRECTORY}/brew shellenv)"; \
       brew install node; \
-      npm install -g @negoziator/ai-commit; \
     fi
+
+RUN npm install -g @negoziator/ai-commit
 
 # Install other packages
 RUN echo "fd ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zoxide tmux luarocks git-delta " > packages.txt
