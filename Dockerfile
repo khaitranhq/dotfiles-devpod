@@ -10,12 +10,12 @@ RUN which fish > fish_directory.txt
 RUN cat /tmp/fish_directory.txt | sudo tee -a /etc/shells
 RUN chsh -s "$(cat /tmp/fish_directory.txt)"
 
-RUN sed -i 's/sudo	ALL=(ALL:ALL) ALL/sudo ALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers
-RUN cat /etc/sudoers
-
 # Create user
 ARG USER
 ENV USER=${USER}
+
+# Change shell of user
+RUN  sed -i "s/\/home\/${USER}:\/bin\/bash/\/home\/node:\/bin\/fish/" /etc/passwd
 
 USER ${USER}
 
