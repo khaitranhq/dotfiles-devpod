@@ -1,9 +1,7 @@
 name: Publish Images
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+
 env:
   PUBLISH_PACKAGES_PAT: ${{ secrets.PUBLISH_PACKAGES_PAT }}
   SOURCE_IMAGE_PREFIX: mcr.microsoft.com/devcontainers

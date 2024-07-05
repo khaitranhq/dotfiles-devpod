@@ -46,7 +46,7 @@ RUN ${BREW_BIN_DIRECTORY}/brew install $(cat packages.txt)
 ENV HOME=/home/${USER}
 ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
 RUN mkdir -p ${TMUX_PLUGIN_MANAGER_PATH}
-RUN git clone https://github.com/tmux-plugins/tpm
+RUN git clone https://github.com/tmux-plugins/tpm ${TMUX_PLUGIN_MANAGER_PATH}/tpm
 
 # Copy configuration
 WORKDIR ${HOME}
