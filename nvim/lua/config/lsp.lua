@@ -3,6 +3,7 @@ return {
         "neovim/nvim-lspconfig",
         dependencies = {
             {"folke/neodev.nvim"},
+            {"williamboman/mason-lspconfig.nvim"},
             {
                 "ray-x/lsp_signature.nvim",
                 event = "VeryLazy"
