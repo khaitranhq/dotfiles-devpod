@@ -45,7 +45,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ghcr.io/${{ env.GITHUB_USERNAME }}/devcontainer:${{ env.IMAGE_TAG }}
+          tags: ghcr.io/${{ env.GITHUB_USERNAME }}/devcontainer:${{ env.IMAGE_TAG }}-${{ github.run_number }}
           build-args: |
             SOURCE_IMAGE=${{ env.SOURCE_IMAGE_PREFIX }}/${{ matrix.image }}
             USER=${{ env.USER }}
