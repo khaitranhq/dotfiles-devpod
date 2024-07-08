@@ -1,6 +1,6 @@
 ARG SOURCE_IMAGE
 FROM ${SOURCE_IMAGE}
-RUN apt update && apt install build-essential exa python3-pip python3-venv acl -y
+RUN apt update && apt install build-essential exa python3-pip python3-venv -y
 
 # Install fish
 WORKDIR /tmp
