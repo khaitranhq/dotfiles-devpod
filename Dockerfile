@@ -23,19 +23,8 @@ USER ${USER}
 RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ENV BREW_BIN_DIRECTORY=/home/linuxbrew/.linuxbrew/bin
 
-# Install node & ai commit
-RUN if ! [ -x "$(command -v node)" ]; then \
-      eval "$(${BREW_BIN_DIRECTORY}/brew shellenv)"; \
-      brew install node; \
-      npm install -g @negoziator/ai-commit; \
-    fi
-
-RUN if [ -x "$(command -v node)" ]; then \
-      npm install -g @negoziator/ai-commit; \
-    fi
-
 # Install other packages
-RUN echo "fd ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zoxide tmux luarocks git-delta " > packages.txt
+RUN echo "fd ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zoxide tmux luarocks git-delta aicommits" > packages.txt
 RUN ${BREW_BIN_DIRECTORY}/brew install $(cat packages.txt)
 
 # Setup TPM
