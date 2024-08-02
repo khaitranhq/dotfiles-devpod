@@ -46,11 +46,7 @@ M.fzf = {
 	n = {
 		["<leader>ff"] = { fzf.files, "Find files" },
 		["<leader>fg"] = { fzf.live_grep, "Search text globally" },
-		["<leader>fb"] = { fzf.buffers, "Search buffers" },
-		["<leader>dca"] = {
-			":lua require'fzf-lua'.lsp_code_actions({ winopts = {relative='cursor'} })<cr>",
-			"",
-		}
+		["<leader>fb"] = { fzf.buffers, "Search buffers" }
 	},
 	v = {
 		["<leader>fs"] = { fzf.grep_visual, "Search with selected text" },
@@ -69,6 +65,7 @@ M.lsp = {
 		["<leader>dci"] = { "<cmd>Lspsaga incoming_calls<CR>", "Incoming call" },
 		["<leader>dco"] = { "<cmd>Lspsaga outgoing_calls<CR>", "Outgoing call" },
 		["<leader>dcm"] = { "<cmd>Lspsaga finder imp<CR>", "Search and preview implementation" },
+    ["<leader>dca"] = { "<cmd>Lspsaga code_action<CR>", "Code action" },
 	},
 }
 
