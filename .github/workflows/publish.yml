@@ -20,7 +20,9 @@ jobs:
           - 'rust:1.0.13-bookworm'
           - 'cpp:1.2.1-debian12'
           - 'javascript-node:1.1.1-18-bookworm'
+          - 'javascript-node:1.1.1-18-bookworm'
           - 'python:1.1.12-3.11-bullseye'
+          - 'javascript-node:1.1.2-18-bullseye'
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
