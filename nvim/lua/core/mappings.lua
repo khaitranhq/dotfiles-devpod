@@ -41,16 +41,19 @@ M.nvimtree = {
 	},
 }
 
-local telescope_builtin = require("telescope.builtin")
-M.telescope = {
+local fzf = require("fzf-lua")
+M.fzf = {
 	n = {
-		["<leader>ff"] = { telescope_builtin.find_files, "Find files" },
-		["<leader>fg"] = { telescope_builtin.live_grep, "Search text globally" },
-		["<leader>fb"] = { telescope_builtin.buffers, "Search buffers" },
-		["<leader>fc"] = { telescope_builtin.current_buffer_fuzzy_find, "Search text in current buffer" },
+		["<leader>ff"] = { fzf.files, "Find files" },
+		["<leader>fg"] = { fzf.live_grep, "Search text globally" },
+		["<leader>fb"] = { fzf.buffers, "Search buffers" },
+		["<leader>dca"] = {
+			":lua require'fzf-lua'.lsp_code_actions({ winopts = {relative='cursor'} })<cr>",
+			"",
+		}
 	},
 	v = {
-		["<leader>fs"] = { vim.search_with_selected_text, "Search with selected text" },
+		["<leader>fs"] = { fzf.grep_visual, "Search with selected text" },
 	},
 }
 
@@ -65,7 +68,6 @@ M.lsp = {
 		["<leader>dfe"] = { "<cmd>Lspsaga peek_definition<CR>", "Peek definition" },
 		["<leader>dci"] = { "<cmd>Lspsaga incoming_calls<CR>", "Incoming call" },
 		["<leader>dco"] = { "<cmd>Lspsaga outgoing_calls<CR>", "Outgoing call" },
-		["<leader>dca"] = { "<cmd>Lspsaga code_action<CR>", "Call action" },
 		["<leader>dcm"] = { "<cmd>Lspsaga finder imp<CR>", "Search and preview implementation" },
 	},
 }

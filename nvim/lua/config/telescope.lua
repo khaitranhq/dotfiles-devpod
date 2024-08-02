@@ -32,6 +32,7 @@ return {
 						"^.venv/",
 						"^.git/",
 						"!^.github/",
+						".pnpm-store",
 					},
 				},
 				pickers = {
