@@ -46,7 +46,8 @@ M.fzf = {
 	n = {
 		["<leader>ff"] = { fzf.files, "Find files" },
 		["<leader>fg"] = { fzf.live_grep, "Search text globally" },
-		["<leader>fb"] = { fzf.buffers, "Search buffers" }
+		["<leader>fb"] = { fzf.buffers, "Search buffers" },
+		["<leader>ft"] = { fzf.tabs, "Browse tabs" },
 	},
 	v = {
 		["<leader>fs"] = { fzf.grep_visual, "Search with selected text" },
@@ -65,7 +66,7 @@ M.lsp = {
 		["<leader>dci"] = { "<cmd>Lspsaga incoming_calls<CR>", "Incoming call" },
 		["<leader>dco"] = { "<cmd>Lspsaga outgoing_calls<CR>", "Outgoing call" },
 		["<leader>dcm"] = { "<cmd>Lspsaga finder imp<CR>", "Search and preview implementation" },
-    ["<leader>dca"] = { "<cmd>Lspsaga code_action<CR>", "Code action" },
+		["<leader>dca"] = { "<cmd>Lspsaga code_action<CR>", "Code action" },
 	},
 }
 
@@ -78,9 +79,7 @@ M.notify = {
 
 M.git = {
 	n = {
-		["<leader>gs"] = { "<cmd>Git<CR>", "Open Git" },
-		["<leader>gb"] = { "<cmd>Git blame<CR>", "Git blame" },
-		["<leader>gd"] = { "<cmd>Gdiffsplit<CR>", "Git diff split" },
+		["<leader>gb"] = { vim.term_git_branch, "Git branch" },
 		["<leader>gl"] = { vim.term_lazygit_toggle, "Open lazygit" },
 		["<leader>gcm"] = { vim.term_aicommits_toggle, "Git commit with aicommits" },
 		["<leader>gcc"] = { "<cmd>GitConflictChooseOurs<CR>", "Git conflict: select current change" },

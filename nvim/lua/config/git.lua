@@ -1,6 +1,11 @@
 return {
-    {
-        "tpope/vim-fugitive"
-    },
-    {"akinsho/git-conflict.nvim", version = "*", config = true}
+	{ "akinsho/git-conflict.nvim", version = "*", config = true },
+	{
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup({
+				current_line_blame = true,
+			})
+		end,
+	},
 }
