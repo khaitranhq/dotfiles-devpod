@@ -11,8 +11,8 @@ RUN cat /tmp/fish_directory.txt | sudo tee -a /etc/shells
 RUN chsh -s "$(cat /tmp/fish_directory.txt)"
 
 # Install fd
-RUN wget https://github.com/sharkdp/fd/releases/download/v10.1.0/fd_10.1.0_amd64.deb -O /tmp/fd.deb
-RUN dpkg -i /tmp/fd.deb
+# RUN wget https://github.com/sharkdp/fd/releases/download/v10.1.0/fd_10.1.0_amd64.deb -O /tmp/fd.deb
+# RUN dpkg -i /tmp/fd.deb
 
 # Change shell of user
 ARG USER
@@ -37,25 +37,26 @@ RUN if [ -x "$(command -v node)" ]; then \
     fi
 
 # Install other packages
-RUN echo "ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zoxide tmux luarocks git-delta " > packages.txt
+# RUN echo "fd ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zoxide tmux luarocks git-delta " > packages.txt
+RUN echo "fd" > packages.txt
 RUN ${BREW_BIN_DIRECTORY}/brew install $(cat packages.txt)
 
-# Setup TPM
-ENV HOME=/home/${USER}
-ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
-RUN mkdir -p ${TMUX_PLUGIN_MANAGER_PATH}
-RUN git clone https://github.com/tmux-plugins/tpm ${TMUX_PLUGIN_MANAGER_PATH}/tpm
-
-# Copy configuration
-WORKDIR ${HOME}
-COPY .tmux.conf .aicommit ./
-
-ENV XDG_CONFIG_HOME=${HOME}/.config
-WORKDIR ${XDG_CONFIG_HOME}
-COPY nvim nvim
-COPY lazygit lazygit
-COPY fish fish
-COPY ohmyposh ohmyposh
-
-RUN sudo chown -R ${USER}: ${HOME}
-RUN mkdir -p ${HOME}/.local/share
+# # Setup TPM
+# ENV HOME=/home/${USER}
+# ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
+# RUN mkdir -p ${TMUX_PLUGIN_MANAGER_PATH}
+# RUN git clone https://github.com/tmux-plugins/tpm ${TMUX_PLUGIN_MANAGER_PATH}/tpm
+#
+# # Copy configuration
+# WORKDIR ${HOME}
+# COPY .tmux.conf .aicommit ./
+#
+# ENV XDG_CONFIG_HOME=${HOME}/.config
+# WORKDIR ${XDG_CONFIG_HOME}
+# COPY nvim nvim
+# COPY lazygit lazygit
+# COPY fish fish
+# COPY ohmyposh ohmyposh
+#
+# RUN sudo chown -R ${USER}: ${HOME}
+# RUN mkdir -p ${HOME}/.local/share
