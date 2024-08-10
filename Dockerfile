@@ -1,4 +1,4 @@
-ARG SOURCE_IMAGE
+ARG SOURCE_IMAGE=mcr.microsoft.com/devcontainers/base:1-bookworm
 FROM ${SOURCE_IMAGE}
 
 # Install fd
