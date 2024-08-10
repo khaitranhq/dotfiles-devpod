@@ -44,17 +44,7 @@ RUN dpkg -i delta.deb
 ARG USER
 ENV USER=${USER}
 USER ${USER}
-
-# Setup TPM
-ENV TPM_COMMIT=99469c4a9b1ccf77fade25842dc7bafbc8ce9946
 ENV HOME=/home/${USER}
-ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
-RUN mkdir -p ${TMUX_PLUGIN_MANAGER_PATH}
-WORKDIR ${TMUX_PLUGIN_MANAGER_PATH}
-RUN wget https://github.com/tmux-plugins/tpm/archive/${TPM_COMMIT}.zip -O tpm.zip
-RUN unzip tpm.zip
-RUN mv tpm-${TPM_COMMIT} tpm
-RUN rm -rf tpm.zip
 
 # Copy configuration
 WORKDIR ${HOME}
@@ -69,6 +59,11 @@ COPY ohmyposh ohmyposh
 
 RUN sudo chown -R ${USER}: ${HOME}
 RUN mkdir -p ${HOME}/.local/share
+
+# Setup TPM
+ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
+RUN mkdir -p ${TMUX_PLUGIN_MANAGER_PATH}
+RUN git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Install tmux && others
 RUN sudo apt update && sudo apt install tmux build-essential exa python3-pip python3-venv -y
