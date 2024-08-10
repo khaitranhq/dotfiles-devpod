@@ -49,14 +49,14 @@ return {
 					},
 				},
 			})
-			lspconfig.gopls.setup({
-				capabilities = capabilities,
-				settings = {
-					gopls = {
-						completeUnimported = true,
-					},
-				},
-			})
+			-- lspconfig.gopls.setup({
+			-- 	capabilities = capabilities,
+			-- 	settings = {
+			-- 		gopls = {
+			-- 			completeUnimported = true,
+			-- 		},
+			-- 	},
+			-- })
 			lspconfig.clangd.setup({
 				capabilities = capabilities,
 			})
