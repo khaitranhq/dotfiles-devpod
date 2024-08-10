@@ -1,6 +1,8 @@
 ARG SOURCE_IMAGE=mcr.microsoft.com/devcontainers/base:1-bookworm
 FROM ${SOURCE_IMAGE}
 
+WORKDIR /tmp/setup
+
 # Install fd
 ENV FD_VERSION=10.1.0
 RUN wget https://github.com/sharkdp/fd/releases/download/v${FD_VERSION}/fd_${FD_VERSION}_amd64.deb -O ./fd.deb
@@ -41,6 +43,16 @@ ENV GIT_DELTA_VERSION=0.17.0
 RUN wget https://github.com/dandavison/delta/releases/download/${GIT_DELTA_VERSION}/git-delta_${GIT_DELTA_VERSION}_amd64.deb -O delta.deb
 RUN dpkg -i delta.deb
 
+# Install node
+RUN if ! command -v node > /dev/null; then \
+      wget https://nodejs.org/dist/v20.16.0/node-v20.16.0-linux-x64.tar.xz && \
+      tar -xf node-v20.16.0-linux-x64.tar.xz &&  \
+      mv node-v20.16.0-linux-x64 /usr/local/lib/node && \
+      ln -sf /usr/local/lib/node/bin/* /usr/local/bin/; \
+    fi
+
+RUN rm -rf /tmp/setup
+
 ARG USER
 ENV USER=${USER}
 USER ${USER}
@@ -65,15 +77,16 @@ ENV TMUX_PLUGIN_MANAGER_PATH=${HOME}/.tmux/plugins
 RUN mkdir -p ${TMUX_PLUGIN_MANAGER_PATH}
 RUN git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
-# Install tmux && others
-RUN sudo apt update && sudo apt install tmux build-essential exa python3-pip python3-venv -y
-
-# Install fish
-WORKDIR /tmp/setup
-COPY install_fish.sh .
-RUN sudo bash /tmp/setup/install_fish.sh
-RUN which fish > fish_directory.txt
-RUN cat /tmp/setup/fish_directory.txt | sudo tee -a /etc/shells
-
 # Change shell of user
 RUN sudo sed -i "s/\/home\/${USER}:\/bin\/bash/\/home\/${USER}:\/bin\/fish/" /etc/passwd
+
+# Install fish
+WORKDIR ${HOME}
+COPY install_fish.sh .
+RUN sudo bash install_fish.sh
+RUN which fish > fish_directory.txt
+RUN cat fish_directory.txt | sudo tee -a /etc/shells
+RUN rm -rf install_fish.sh fish_directory.txt
+
+# Install tmux && others
+RUN sudo apt update && sudo apt install tmux build-essential exa python3-pip python3-venv -y
