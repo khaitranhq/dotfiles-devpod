@@ -62,11 +62,11 @@ M.lsp = {
 		["<leader>de"] = { vim.diagnostic.open_float, "Show diagnostic message in a float window" },
 		["<leader>dfd"] = { vim.lsp.buf.hover, "Show document in float window" },
 		["<leader>dd"] = { vim.lsp.buf.definition, "Show definition" },
-		["<leader>dfe"] = { "<cmd>Lspsaga peek_definition<CR>", "Peek definition" },
-		["<leader>dci"] = { "<cmd>Lspsaga incoming_calls<CR>", "Incoming call" },
-		["<leader>dco"] = { "<cmd>Lspsaga outgoing_calls<CR>", "Outgoing call" },
-		["<leader>dcm"] = { "<cmd>Lspsaga finder imp<CR>", "Search and preview implementation" },
-		["<leader>dca"] = { "<cmd>Lspsaga code_action<CR>", "Code action" },
+		["<leader>dfe"] = { fzf.lsp_definitions, "Peek definition" },
+		["<leader>dci"] = { fzf.lsp_incoming_calls, "Incoming call" },
+		["<leader>dco"] = { fzf.lsp_outgoing_calls, "Outgoing call" },
+		["<leader>dcm"] = { fzf.lsp_implementations, "Search and preview implementation" },
+		["<leader>dca"] = { fzf.lsp_code_actions, "Code action" },
 	},
 }
 
@@ -106,16 +106,6 @@ M.window_picket = {
 M.leap = {
 	n = {
 		["s"] = { "<Plug>(leap)", "Navigate with leap" },
-	},
-}
-
-M.dap = {
-	n = {
-		["<leader>ss"] = { vim.cmd.DapContinue, "Run or continue" },
-		["<leader>sn"] = { vim.cmd.DapStepOver, "Step over" },
-		["<leader>st"] = { vim.cmd.DapTerminate, "Terminate debug session" },
-		["<leader>sb"] = { vim.cmd.DapToggleBreakpoint, "Toggle breakpoint" },
-		["<leader>sc"] = { require("dapui").close, "Close debug ui" },
 	},
 }
 

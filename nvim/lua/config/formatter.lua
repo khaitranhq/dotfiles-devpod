@@ -14,9 +14,6 @@ return {
                     lua = {
                         require("formatter.filetypes.lua").stylua
                     },
-                    go = {
-                        require("formatter.filetypes.go").golines
-                    },
                     css = {
                         require("formatter.filetypes.css").prettier
                     },
