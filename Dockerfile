@@ -10,11 +10,13 @@ RUN which fish > fish_directory.txt
 RUN cat /tmp/fish_directory.txt | sudo tee -a /etc/shells
 RUN chsh -s "$(cat /tmp/fish_directory.txt)"
 
-# Create user
-ARG USER
-ENV USER=${USER}
+# Install fd
+RUN wget https://github.com/sharkdp/fd/releases/download/v10.1.0/fd_10.1.0_amd64.deb -O /tmp/fd.deb
+RUN dpkg -i /tmp/fd.deb
 
 # Change shell of user
+ARG USER
+ENV USER=${USER}
 RUN  sed -i "s/\/home\/${USER}:\/bin\/bash/\/home\/${USER}:\/bin\/fish/" /etc/passwd
 
 USER ${USER}
@@ -35,7 +37,7 @@ RUN if [ -x "$(command -v node)" ]; then \
     fi
 
 # Install other packages
-RUN echo "fd ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zoxide tmux luarocks git-delta " > packages.txt
+RUN echo "ripgrep neovim lazygit jandedobbeleer/oh-my-posh/oh-my-posh fzf zoxide tmux luarocks git-delta " > packages.txt
 RUN ${BREW_BIN_DIRECTORY}/brew install $(cat packages.txt)
 
 # Setup TPM
