@@ -1,5 +1,10 @@
 function vim.window_picker_select()
     local window_id = require("window-picker").pick_window()
+    if window_id == nil then
+      print("No window selected")
+      return
+    end
+
     vim.api.nvim_set_current_win(window_id)
 end
 

@@ -20,7 +20,6 @@ return {
 				-- start
 				ensure_installed = {
 					"stylua",
-					-- "golines",
 					"prettier",
 					"shfmt",
 					"black",
