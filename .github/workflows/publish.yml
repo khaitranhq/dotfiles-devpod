@@ -60,3 +60,9 @@ jobs:
             USER=${{ env.USER }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - uses: actions/delete-package-versions@v5
+        with: 
+          package-name: 'devcontainer'
+          package-type: 'docker'
+          min-versions-to-keep: 10
