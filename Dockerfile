@@ -62,14 +62,6 @@ ENV HOME=/home/${USER}
 WORKDIR ${HOME}
 COPY .tmux.conf .aicommit ./
 
-ENV XDG_CONFIG_HOME=${HOME}/.config
-WORKDIR ${XDG_CONFIG_HOME}
-COPY nvim nvim
-COPY lazygit lazygit
-COPY fish fish
-COPY ohmyposh ohmyposh
-
-RUN sudo chown -R ${USER}: ${HOME}
 RUN mkdir -p ${HOME}/.local/share
 
 # Setup TPM
@@ -81,7 +73,6 @@ RUN git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 RUN sudo sed -i "s/\/home\/${USER}:\/bin\/bash/\/home\/${USER}:\/bin\/fish/" /etc/passwd
 
 # Install fish
-WORKDIR ${HOME}
 COPY install_fish.sh .
 RUN sudo bash install_fish.sh
 RUN which fish > fish_directory.txt
@@ -90,3 +81,20 @@ RUN rm -rf install_fish.sh fish_directory.txt
 
 # Install tmux && others
 RUN sudo apt update && sudo apt install tmux build-essential exa python3-pip python3-venv -y
+
+# Setup config
+ENV XDG_CONFIG_HOME=${HOME}/.config
+RUN git clone https://github.com/khaitranhq/dotfiles-devpod.git dotfiles
+
+RUN mkdir -p ${XDG_CONFIG_HOME}/fish
+RUN ln -sf ${HOME}/dotfiles/fish/config.fish ${XDG_CONFIG_HOME}/fish/config.fish
+
+RUN ln -sf ${HOME}/dotfiles/nvim ${XDG_CONFIG_HOME}/nvim
+
+RUN mkdir -p ${XDG_CONFIG_HOME}/lazygit
+RUN ln -sf ${HOME}/dotfiles/lazygit/config.yml ${XDG_CONFIG_HOME}/lazygit/config.yml
+
+RUN mkdir -p ${XDG_CONFIG_HOME}/ohmyposh
+RUN ln -sf ${HOME}/dotfiles/ohmyposh/jandedobbeleer.omp.json ${XDG_CONFIG_HOME}/ohmyposh/jandedobbeleer.omp.json
+
+RUN ln -sf ${HOME}/dotfiles/.tmux.conf ${HOME}/.tmux.conf

@@ -13,8 +13,8 @@ end
 
 function vim.search_with_selected_text()
 	local text = getVisualSelection()
-  local fzf = require('fzf-lua')
-  fzf.grep_visual(text)
+	local fzf = require("fzf-lua")
+	fzf.grep_visual(text)
 end
 
 return {
@@ -25,10 +25,13 @@ return {
 		config = function()
 			-- calling `setup` is optional for customization
 			require("fzf-lua").setup({
-        grep = {
-          rg_opts = "--hidden --no-ignore --color=always --smart-case --no-heading --with-filename --line-number --column"
-        }
-      })
+				grep = {
+					rg_opts = "--hidden --no-ignore --color=always --smart-case --no-heading --with-filename --line-number --column",
+				},
+				code_actions = {
+					previewer = "codeaction_native",
+				},
+			})
 		end,
 	},
 }
