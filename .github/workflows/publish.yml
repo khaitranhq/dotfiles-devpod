@@ -69,5 +69,12 @@ jobs:
         with: 
           package-name: 'devcontainer'
           package-type: 'container'
-          min-versions-to-keep: 50
+          delete-only-untagged-versions: true
+          token: ${{ secrets.PUBLISH_PACKAGES_PAT }}
+
+      - uses: actions/delete-package-versions@v5
+        with: 
+          package-name: 'devcontainer'
+          package-type: 'container'
+          min-versions-to-keep: 14
           token: ${{ secrets.PUBLISH_PACKAGES_PAT }}
