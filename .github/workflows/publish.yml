@@ -69,5 +69,5 @@ jobs:
         with: 
           package-name: 'devcontainer'
           package-type: 'container'
-          min-versions-to-keep: 50
+          min-versions-to-keep: 21
           token: ${{ secrets.PUBLISH_PACKAGES_PAT }}
