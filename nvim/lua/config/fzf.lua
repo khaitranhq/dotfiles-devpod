@@ -28,8 +28,10 @@ return {
 				grep = {
 					rg_opts = "--hidden --no-ignore --color=always --smart-case --no-heading --with-filename --line-number --column",
 				},
-				code_actions = {
-					previewer = "codeaction_native",
+				lsp = {
+					code_actions = {
+						previewer = "codeaction_native",
+					},
 				},
 			})
 		end,
