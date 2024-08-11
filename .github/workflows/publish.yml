@@ -46,20 +46,20 @@ jobs:
           fi 
           echo "USER=$USER" >> $GITHUB_ENV
 
-      - name: build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile
-          push: true
-          tags: |
-            ghcr.io/${{ env.GITHUB_USERNAME }}/devcontainer:${{ env.IMAGE_TAG }}-${{ github.run_number }}
-            ghcr.io/${{ env.GITHUB_USERNAME }}/devcontainer:${{ env.IMAGE_TAG }}
-          build-args: |
-            SOURCE_IMAGE=${{ env.SOURCE_IMAGE_PREFIX }}/${{ matrix.image }}
-            USER=${{ env.USER }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      # - name: build and push
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: .
+      #     file: Dockerfile
+      #     push: true
+      #     tags: |
+      #       ghcr.io/${{ env.GITHUB_USERNAME }}/devcontainer:${{ env.IMAGE_TAG }}-${{ github.run_number }}
+      #       ghcr.io/${{ env.GITHUB_USERNAME }}/devcontainer:${{ env.IMAGE_TAG }}
+      #     build-args: |
+      #       SOURCE_IMAGE=${{ env.SOURCE_IMAGE_PREFIX }}/${{ matrix.image }}
+      #       USER=${{ env.USER }}
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
   # remove-package:
   #   name: Remote pacakges
   #   runs-on: ubuntu-22.04
