@@ -61,6 +61,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
   remove-package:
+    needs: [publish]
     name: Remote pacakges
     runs-on: ubuntu-22.04
     steps:
