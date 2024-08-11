@@ -60,9 +60,21 @@ jobs:
             USER=${{ env.USER }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+  remove-package:
+    needs: [publish]
+    name: Remote pacakges
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/delete-package-versions@v5
+        with: 
+          package-name: 'devcontainer'
+          package-type: 'container'
+          delete-only-untagged-versions: true
+          token: ${{ secrets.PUBLISH_PACKAGES_PAT }}
 
       - uses: actions/delete-package-versions@v5
         with: 
           package-name: 'devcontainer'
           package-type: 'container'
-          min-versions-to-keep: 10
+          min-versions-to-keep: 14
+          token: ${{ secrets.PUBLISH_PACKAGES_PAT }}
