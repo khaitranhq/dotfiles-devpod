@@ -53,6 +53,9 @@ RUN if ! command -v node > /dev/null; then \
 
 RUN rm -rf /tmp/setup
 
+# Install aicommit
+RUN npm install -g @negoziator/ai-commit@1.2.74
+
 ARG USER
 ENV USER=${USER}
 USER ${USER}
@@ -98,3 +101,5 @@ RUN mkdir -p ${XDG_CONFIG_HOME}/ohmyposh
 RUN ln -sf ${HOME}/dotfiles/ohmyposh/jandedobbeleer.omp.json ${XDG_CONFIG_HOME}/ohmyposh/jandedobbeleer.omp.json
 
 RUN ln -sf ${HOME}/dotfiles/.tmux.conf ${HOME}/.tmux.conf
+
+RUN ln -sf ${HOME}/dotfiles/.aicommit ${HOME}/.aicommit
