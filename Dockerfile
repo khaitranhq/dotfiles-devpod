@@ -55,6 +55,7 @@ RUN rm -rf /tmp/setup
 
 # Install aicommit
 RUN npm install -g @negoziator/ai-commit@1.2.74
+RUN ln -sf /usr/local/lib/node/bin/* /usr/local/bin
 
 ARG USER
 ENV USER=${USER}
