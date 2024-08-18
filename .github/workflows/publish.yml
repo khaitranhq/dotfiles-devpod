@@ -23,6 +23,7 @@ jobs:
           - 'javascript-node:1-20-bookworm'
           - 'javascript-node:1-18-bookworm'
           - 'python:1-3-bookworm'
+          - 'base:1-bookworm'
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
