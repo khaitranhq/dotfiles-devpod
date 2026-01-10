@@ -1,74 +1,37 @@
 #!/bin/bash
 
-echo "Whoami: $USER"
+mkdir -p ~/.config/fish
+cp -r ./fish/* ~/.config/fish/
 
-export XDG_CONFIG_HOME="$HOME"/.config
-mkdir -p "$XDG_CONFIG_HOME"
+mkdir -p ~/.config/ohmyposh
+cp -r ./ohmyposh/* ~/.config/ohmyposh/
 
-sudo apt update
-sudo apt install build-essential exa python3-pip python3-venv -y
+mkdir -p ~/.config/nvim
+cp -r ./nvim/* ~/.config/nvim/
 
-sudo bash "$PWD"/install_fish.sh
-fish_directory=$(which fish)
-echo $fish_directory | sudo tee -a /etc/shells
-sudo chsh -s $fish_directory
-sudo sed -i "\$s/.*/$USER:x:1000:1000::\/home\/$USER:\/usr\/bin\/fish/" /etc/passwd
+nvim --headless "+Lazy! sync" +qa
 
-# Install homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-(echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> $HOME/.bashrc
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-source "$HOME"/.bashrc
+mkdir -p ~/.config/zellij
+cp -r ./zellij/* ~/.config/zellij/
 
-if ! command -v brew -v &> /dev/null
-then
-    echo "Install brew failed"
-    exit 1
-fi
+mkdir -p ~/.config/yamlfmt
+cp -r ./yamlfmt/.* ~/.config/yamlfmt/
 
-# Install packages
-packages=(
-	fd
-	ripgrep
-  neovim
-	lazygit
-  jandedobbeleer/oh-my-posh/oh-my-posh
-  fzf
-  zoxide
-  tmux
-  luarocks
-  git-delta
-)
+mkdir -p ~/.config/yamllint
+cp -r ./yamllint/* ~/.config/yamllint/
 
-for package in "${packages[@]}"; do
-	echo "Installing $package..."
-	brew install "$package"
-done
+mkdir -p ~/.AgentCrew
+cp -r ./AgentCrew/* ~/.AgentCrew/
 
-# Install node if devcontianer not installed node
-if ! command -v node -v &> /dev/null
-then
-  echo "Installing node & npm..."
-  brew install node
-fi
+mkdir -p ~/.config/eza
+cp -r ./eza/* ~/.config/eza/
 
-TMUX_PLUGIN_MANAGER_PATH="$HOME"/.tmux/plugins
-mkdir -p $TMUX_PLUGIN_MANAGER_PATH
-git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_MANAGER_PATH"/tpm
+cp git/.gitconfig ~/.gitconfig
+mkdir -p ~/.config/git
+cp -r ./git/hook ~/.config/git
+cp -r ./git/ignore ~/.config/git
 
-ln -sf "$PWD/nvim" "$XDG_CONFIG_HOME"/nvim
-ln -sf "$PWD/.tmux.conf" "$HOME"/.tmux.conf
-ln -sf "$PWD/lazygit" "$XDG_CONFIG_HOME"/lazygit
-cp -r "$PWD/fish" "$XDG_CONFIG_HOME"
-ln -sf "$PWD/ohmyposh" "$XDG_CONFIG_HOME"/ohmyposh
+cp golangci-lint/.golangci.yaml ~/
 
-# Install aicommit
-npm install -g @negoziator/ai-commit
-aicommit config set auto-confirm=true
-aicommit config set type=conventional
-
-echo "All packages from the setup script have been installed."
-echo "Next steps: Remote to container, setup OPENAI key and CODEIUM key"
-echo " - echo 'export OPENAI_API_KEY=\"sk-...\"' >>  ~/.config/fish/config.sh"
-echo " - echo '{\"api_key\": \"key.....\"}' >> ~/.cache/nvim/codeium/config.json"
-exit 0
+mkdir -p ~/.config/lazygit/
+cp -r ./lazygit/* ~/.config/lazygit/

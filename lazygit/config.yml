@@ -1,31 +1,36 @@
 gui:
+  nerdFontsVersion: "3"
   theme:
     activeBorderColor:
-      - '#8aadf4'
-      - bold
+      - "#ff9e64"
+      - "bold"
     inactiveBorderColor:
-      - '#a5adcb'
-    optionsTextColor:
-      - '#8aadf4'
-    selectedLineBgColor:
-      - '#363a4f'
-    selectedRangeBgColor:
-      - '#363a4f'
-    cherryPickedCommitBgColor:
-      - '#494d64'
-    cherryPickedCommitFgColor:
-      - '#8aadf4'
-    unstagedChangesColor:
-      - '#ed8796'
-    defaultFgColor:
-      - '#cad3f5'
+      - "#27a1b9"
     searchingActiveBorderColor:
-      - '#eed49f'
+      - "#ff9e64"
+      - "bold"
+    optionsTextColor:
+      - "#7aa2f7"
+    selectedLineBgColor:
+      - "#283457"
+    cherryPickedCommitFgColor:
+      - "#7aa2f7"
+    cherryPickedCommitBgColor:
+      - "#bb9af7"
+    markedBaseCommitFgColor:
+      - "#7aa2f7"
+    markedBaseCommitBgColor:
+      - "#e0af68"
+    unstagedChangesColor:
+      - "#db4b4b"
+    defaultFgColor:
+      - "#c0caf5"
 git:
-  paging:
-    colorArg: always
-    pager: delta --dark --paging=never
-customCommands:
-  - key: '<c-a>'
-    context: 'global'
-    command: "aicommits"
+  autoFetch: false
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
+
+os:
+  editPreset: nvim-remote
+promptToReturnFromSubprocess: false

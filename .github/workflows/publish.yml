@@ -1,8 +1,8 @@
 name: Publish Images
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
+  # push:
+  #   branches: [main]
 
 env:
   PUBLISH_PACKAGES_PAT: ${{ secrets.PUBLISH_PACKAGES_PAT }}
@@ -15,15 +15,15 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        image: 
-          - 'typescript-node:1-20-bookworm'
-          - 'typescript-node:1-18-bookworm'
-          - 'rust:1-1-bookworm'
-          - 'cpp:1-debian12'
-          - 'javascript-node:1-20-bookworm'
-          - 'javascript-node:1-18-bookworm'
-          - 'python:1-3-bookworm'
-          - 'base:1-bookworm'
+        image:
+          - "typescript-node:1-20-bookworm"
+          - "typescript-node:1-18-bookworm"
+          - "rust:1-1-bookworm"
+          - "cpp:1-debian12"
+          - "javascript-node:1-20-bookworm"
+          - "javascript-node:1-18-bookworm"
+          - "python:1-3-bookworm"
+          - "base:1-bookworm"
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
@@ -36,17 +36,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: get image tag
-        run: |
-          SOURCE_IMAGE_TAG="${{ matrix.image }}"
-          IMAGE_TAG=${SOURCE_IMAGE_TAG/:/-}
-          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
-
-          USER="vscode"
-          if [[ "$SOURCE_IMAGE_TAG" == *"node"* ]]; then
-            USER="node"
-          fi 
-          echo "USER=$USER" >> $GITHUB_ENV
-
+        run: "SOURCE_IMAGE_TAG=\"${{ matrix.image }}\"\nIMAGE_TAG=${SOURCE_IMAGE_TAG/:/-}\necho \"IMAGE_TAG=$IMAGE_TAG\" >> $GITHUB_ENV\n#magic___^_^___line\nUSER=\"vscode\"\nif [[ \"$SOURCE_IMAGE_TAG\" == *\"node\"* ]]; then\n  USER=\"node\"\nfi \necho \"USER=$USER\" >> $GITHUB_ENV\n  #magic___^_^___line\n"
       - name: build and push
         uses: docker/build-push-action@v5
         with:
@@ -62,13 +52,14 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
   remove-package:
-    needs: [publish]
+    needs:
+      - publish
     name: Remote pacakges
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/delete-package-versions@v5
-        with: 
-          package-name: 'devcontainer'
-          package-type: 'container'
+        with:
+          package-name: "devcontainer"
+          package-type: "container"
           min-versions-to-keep: 21
           token: ${{ secrets.PUBLISH_PACKAGES_PAT }}

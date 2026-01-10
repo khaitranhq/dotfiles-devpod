@@ -1,0 +1,33 @@
+version: "2"
+
+linters:
+  default: all
+  disable:
+    - testpackage
+    - depguard
+    - godot
+    - exhaustruct
+    - wsl
+    - wsl_v5
+    - funlen
+    - noinlineerr
+    - forbidigo
+    - revive
+    - nilnil
+    - ireturn
+
+  settings:
+    perfsprint:
+      string-format: false
+    gosec:
+      excludes:
+        - G204 #  Subprocess launched with variable
+
+  exclusions:
+    rules:
+      - linters:
+          - varnamelen
+        text: variable name (.+) is too short for the scope of its usage
+      - linters:
+          - godoclint
+        text: godoc should start with symbol name \(\".+\"\)

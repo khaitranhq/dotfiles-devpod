@@ -1,0 +1,103 @@
+{
+  "aws-api": {
+    "args": ["awslabs.aws-api-mcp-server@latest"],
+    "command": "uvx",
+    "enabledForAgents": ["DevOpsEngineer"],
+    "env": {},
+    "headers": {},
+    "name": "aws-api",
+    "streaming_server": false,
+    "url": ""
+  },
+  "aws-document": {
+    "args": ["awslabs.aws-documentation-mcp-server@latest"],
+    "command": "uvx",
+    "enabledForAgents": ["DevOpsEngineer"],
+    "env": {},
+    "headers": {},
+    "name": "aws-document",
+    "streaming_server": false,
+    "url": ""
+  },
+  "aws-cost": {
+    "args": ["awslabs.aws-pricing-mcp-server@latest"],
+    "command": "uvx",
+    "enabledForAgents": ["DevOpsEngineer"],
+    "env": {
+      "AWS_PROFILE": "default"
+    },
+    "name": "aws-cost"
+  },
+  "pulumi": {
+    "args": ["@pulumi/mcp-server", "stdio"],
+    "command": "npx",
+    "enabledForAgents": ["SerenaEngineerAgent", "PulumiEngineer"],
+    "name": "pulumi"
+  },
+  "new_server_5": {
+    "args": ["-y", "@azure/mcp@latest", "server", "start"],
+    "command": "npx",
+    "enabledForAgents": ["DevOpsEngineer"],
+    "env": {},
+    "headers": {},
+    "name": "azure",
+    "streaming_server": false,
+    "url": ""
+  },
+  "new_server_7": {
+    "args": ["mcp-server-git"],
+    "command": "uvx",
+    "enabledForAgents": [
+      "Engineer",
+      "DevOpsEngineer",
+      "PulumiEngineer",
+      "GoEngineer",
+      "PRDiffPreprocessingAgent",
+      "CDKEngineer"
+    ],
+    "env": {},
+    "headers": {},
+    "name": "git",
+    "streaming_server": false,
+    "url": ""
+  },
+  "new_server_8": {
+    "args": ["mcp"],
+    "command": "gopls",
+    "enabledForAgents": ["GoEngineer"],
+    "env": {},
+    "headers": {},
+    "name": "gopls",
+    "streaming_server": false,
+    "url": ""
+  },
+  "new_server_9": {
+    "args": ["run", "-i", "--rm"],
+    "command": "docker",
+    "enabledForAgents": [],
+    "env": {},
+    "headers": {},
+    "name": "mermaid",
+    "streaming_server": true,
+    "url": "https://mcp.mermaidchart.com/mcp"
+  },
+  "new_server_11": {
+    "args": [
+      "--from",
+      "git+https://github.com/ast-grep/ast-grep-mcp",
+      "ast-grep-server"
+    ],
+    "command": "uvx",
+    "enabledForAgents": [
+      "Engineer",
+      "PulumiEngineer",
+      "GoEngineer",
+      "PRDiffPreprocessingAgent"
+    ],
+    "env": {},
+    "headers": {},
+    "name": "ast-grep",
+    "streaming_server": false,
+    "url": ""
+  }
+}
