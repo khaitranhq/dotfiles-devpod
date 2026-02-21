@@ -35,3 +35,6 @@ cp golangci-lint/.golangci.yaml ~/
 
 mkdir -p ~/.config/lazygit/
 cp -r ./lazygit/* ~/.config/lazygit/
+
+mkdir -p ~/.config/opencode
+cp -r ./opencode/* ~/.config/opencode/
