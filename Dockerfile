@@ -4,18 +4,17 @@ FROM mcr.microsoft.com/devcontainers/base:2.1.3-debian13 AS base
 #========================= FUNDAMENTAL IMAGE =========================
 FROM base AS fundamental
 
-# Install common dependencies
-RUN apt update && \
+# Install fish && common dependencies
+RUN echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/4/Debian_Unstable/ /' \
+      | sudo tee /etc/apt/sources.list.d/shells:fish:release:4.list && \
+    curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:4/Debian_Unstable/Release.key \
+      | gpg --dearmor \
+      | sudo tee /etc/apt/trusted.gpg.d/shells_fish_release_4.gpg > /dev/null && \
+    apt update && \
     apt install python3 file zip unzip yamllint -y && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
-
-# Install fish
-ENV FISH_VERSION=4.3.3-1
-RUN wget https://download.opensuse.org/repositories/shells:/fish:/release:/4/Debian_13/amd64/fish_${FISH_VERSION}_amd64.deb -O ./fish.deb && \
-    dpkg -i ./fish.deb && \
-    chsh -s $(which fish) vscode
 
 # Install ripgrep
 ENV RIPGREP_VERSION=15.1.0
@@ -24,7 +23,7 @@ RUN wget "https://github.com/BurntSushi/ripgrep/releases/download/${RIPGREP_VERS
     mv ripgrep-${RIPGREP_VERSION}-x86_64-unknown-linux-musl/rg /usr/local/bin/rg
 
 # Install neovim
-ENV NEOVIM_VERSION=v0.11.5
+ENV NEOVIM_VERSION=v0.11.6
 RUN wget https://github.com/neovim/neovim/releases/download/${NEOVIM_VERSION}/nvim-linux-x86_64.tar.gz -O ./nvim.tar.gz && \
     tar -xzf ./nvim.tar.gz && \
     mv nvim-linux-x86_64 /usr/local/share/nvim && \
@@ -92,14 +91,11 @@ RUN wget https://github.com/google/yamlfmt/releases/download/v${YAMLFMT_VERSION}
     tar -xzf ./yamlfmt.tar.gz && \
     mv yamlfmt /usr/local/bin
 
-# Install uv
-ENV UV_VERSION=0.9.24
-RUN wget https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-x86_64-unknown-linux-gnu.tar.gz -O ./uv.tar.gz && \
-    tar -xzf ./uv.tar.gz && \
-    mv uv-x86_64-unknown-linux-gnu/* /usr/local/bin/
-
-# Install agentcrew
-RUN uv tool install agentcrew-ai --python 3.12
+# Install opencode
+ENV OPENCODE_VERSION=v1.2.10
+RUN wget https://github.com/anomalyco/opencode/releases/download/${OPENCODE_VERSION}/opencode-linux-x64.tar.gz && \
+    tar xvf opencode-linux-x64.tar.gz && \
+    mv opencode /usr/local/bin
 
 # Install lazygit
 ENV LAZYGIT_VERSION=0.58.0
@@ -122,36 +118,16 @@ RUN wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz -O ./go.tar.gz && 
     ln -sf /usr/local/go/bin/gofmt /usr/local/bin/gofmt
 
 # Install go tools
-RUN go install golang.org/x/tools/gopls@latest && \
-    go install github.com/golangci/golines@latest && \
-    go install mvdan.cc/gofumpt@latest && \
-    go install golang.org/x/tools/cmd/goimports@latest
+RUN go install golang.org/x/tools/gopls@v0.21.1 && \
+    go install github.com/golangci/golines@v0.15.0 && \
+    go install mvdan.cc/gofumpt@v0.9.2 && \
+    go install golang.org/x/tools/cmd/goimports@v0.42.0
 
 # Install golangci-lint
-ENV GOLANGCI_LINT_VERSION=2.8.0
+ENV GOLANGCI_LINT_VERSION=2.10.1
 RUN wget https://github.com/golangci/golangci-lint/releases/download/v${GOLANGCI_LINT_VERSION}/golangci-lint-${GOLANGCI_LINT_VERSION}-linux-amd64.tar.gz -O ./golangci-lint.tar.gz && \
     tar -xzf ./golangci-lint.tar.gz && \
-    mv golangci-lint-2.8.0-linux-amd64/golangci-lint /usr/local/bin/golangci-lint
-
-# Clean up
-RUN rm -rf /tmp/*
-
-#========================= Pulumi & Go =========================
-FROM go AS pulumi-go
-
-# Install Pulumi
-RUN wget https://get.pulumi.com/releases/sdk/pulumi-v3.214.1-linux-x64.tar.gz -O ./pulumi.tar.gz && \
-    tar -xzf ./pulumi.tar.gz && \
-    mv pulumi/* /usr/local/bin
-
-# Install AZ CLI
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash && \
-    rm -rf /var/lib/apt/lists/*
-
-# Install AWS CLI
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-    unzip awscliv2.zip && \
-    ./aws/install
+    mv golangci-lint-${GOLANGCI_LINT_VERSION}-linux-amd64/golangci-lint /usr/local/bin/golangci-lint
 
 # Clean up
 RUN rm -rf /tmp/*
