@@ -11,7 +11,8 @@ RUN echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/4
       | gpg --dearmor \
       | sudo tee /etc/apt/trusted.gpg.d/shells_fish_release_4.gpg > /dev/null && \
     apt update && \
-    apt install python3 file zip unzip yamllint -y && \
+    apt install python3 file zip unzip yamllint fish -y && \
+    sudo chsh -s $(which fish) vscode && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
