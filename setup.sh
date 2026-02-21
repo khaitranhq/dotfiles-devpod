@@ -20,9 +20,6 @@ cp -r ./yamlfmt/.* ~/.config/yamlfmt/
 mkdir -p ~/.config/yamllint
 cp -r ./yamllint/* ~/.config/yamllint/
 
-mkdir -p ~/.AgentCrew
-cp -r ./AgentCrew/* ~/.AgentCrew/
-
 mkdir -p ~/.config/eza
 cp -r ./eza/* ~/.config/eza/
 
@@ -38,3 +35,6 @@ cp -r ./lazygit/* ~/.config/lazygit/
 
 mkdir -p ~/.config/opencode
 cp -r ./opencode/* ~/.config/opencode/
+
+mkdir -p ~/.config/ripgrep
+cp -r ./ripgrep/* ~/.config/ripgrep/
