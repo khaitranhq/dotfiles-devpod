@@ -1,42 +1,38 @@
 return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    event = { "BufReadPost", "BufNewFile" }, -- Lazy load for better startup
-    dependencies = {
-      "windwp/nvim-ts-autotag",
-    },
-    init = function()
-      vim.filetype.add({
-        extension = {
-          gotmpl = "gotmpl",
-        },
-        pattern = {
-          [".*/templates/.*%.tpl"] = "helm",
-          [".*/templates/.*%.ya?ml"] = "helm",
-          ["helmfile.*%.ya?ml"] = "helm",
-        },
-      })
-    end,
-    config = function()
-      require("nvim-treesitter.config").setup({
-        modules = {},
-        ensure_installed = {},
-        ignore_install = {},
-        -- Install parsers synchronously (only applied to `ensure_installed`)
-        sync_install = false, -- Async install for better performance
-        -- Automatically install missing parsers when entering buffer
-        auto_install = true,
+	{
+		"nvim-treesitter/nvim-treesitter",
+		lazy = false,
+		build = ":TSUpdate",
+		config = function()
+			local function start_ts(buf)
+				local ft = vim.bo[buf].filetype
+				if ft == "" then
+					return
+				end
 
-        highlight = {
-          -- `false` will disable the whole extension
-          enable = true,
-          disable = { "dockerfile" },
-          additional_vim_regex_highlighting = false,
-        },
-        autotag = {
-          enable = true,
-        },
-      })
-    end,
-  },
+				local ok, parsers = pcall(require, "nvim-treesitter.parsers")
+				if ok and parsers.has_parser(ft) then
+					pcall(vim.treesitter.start, buf, ft)
+				end
+			end
+
+			vim.api.nvim_create_autocmd("FileType", {
+				group = vim.api.nvim_create_augroup("treesitter_setup", { clear = true }),
+				callback = function(ev)
+					start_ts(ev.buf)
+				end,
+			})
+
+			-- Start treesitter for already loaded buffers
+			for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+				if vim.api.nvim_buf_is_loaded(buf) then
+					start_ts(buf)
+				end
+			end
+
+			require("nvim-treesitter")
+				.install({ "bash", "markdown", "markdown_inline", "cpp", "go", "json", "yaml", "c" })
+				:wait(300000) -- wait max. 5 minutes
+		end,
+	},
 }

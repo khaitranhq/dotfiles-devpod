@@ -2,50 +2,24 @@ local M = {}
 local merge_tb = vim.tbl_deep_extend
 
 M.load_mappings = function()
-  vim.schedule(function()
-    local function set_section_map(section_values)
-      for mode, mode_values in pairs(section_values) do
-        local default_opts = merge_tb("force", { mode = mode }, {})
-        for keybind, mapping_info in pairs(mode_values) do
-          -- merge default + user opts
-          local opts = merge_tb("force", default_opts, mapping_info.opts or {})
+	vim.schedule(function()
+		local mappings = require("core.mappings")
 
-          mapping_info.opts, opts.mode = nil, nil
-          opts.desc = mapping_info[2]
+		for _, sect in pairs(mappings) do
+			for mode, mode_values in pairs(sect) do
+				local default_opts = merge_tb("force", { mode = mode }, {})
+				for keybind, mapping_info in pairs(mode_values) do
+					-- merge default + user opts
+					local opts = merge_tb("force", default_opts, mapping_info.opts or {})
 
-          vim.keymap.set(mode, keybind, mapping_info[1], opts)
-        end
-      end
-    end
+					mapping_info.opts, opts.mode = nil, nil
+					opts.desc = mapping_info[2]
 
-    local mappings = require("core.mappings")
-
-    for _, sect in pairs(mappings) do
-      set_section_map(sect)
-    end
-  end)
-end
-
-M.select_tab = function()
-  local tabs = vim.api.nvim_list_tabpages()
-  local tab_names = {}
-
-  for _, tab in ipairs(tabs) do
-    local tabnr = vim.api.nvim_tabpage_get_number(tab)
-    local tabname = "Tab " .. tabnr
-    table.insert(tab_names, { tab = tab, name = tabname })
-  end
-
-  vim.ui.select(tab_names, {
-    prompt = "Select a tab:",
-    format_item = function(item)
-      return item.name
-    end,
-  }, function(choice)
-    if choice then
-      vim.api.nvim_set_current_tabpage(choice.tab)
-    end
-  end)
+					vim.keymap.set(mode, keybind, mapping_info[1], opts)
+				end
+			end
+		end
+	end)
 end
 
 --- Prompt user to copy current buffer's absolute or relative path to clipboard.
@@ -54,249 +28,160 @@ end
 --- - Relative: Path from current working directory.
 --- - Filename: Just the filename without path.
 function M.copy_buffer_path()
-  local buf_path = vim.api.nvim_buf_get_name(0)
-  if buf_path == "" then
-    vim.notify("No file in current buffer.", vim.log.levels.WARN)
-    return
-  end
+	local buf_path = vim.api.nvim_buf_get_name(0)
+	if buf_path == "" then
+		vim.notify("No file in current buffer.", vim.log.levels.WARN)
+		return
+	end
 
-  local abs_path = buf_path
-  local rel_path = vim.fn.fnamemodify(buf_path, ":.") -- relative to cwd
-  local filename = vim.fn.fnamemodify(buf_path, ":t") -- filename only
-  local choices = {
-    { label = "Relative path (cwd)", value = rel_path },
-    { label = "Absolute path",       value = abs_path },
-    { label = "Filename only",       value = filename },
-  }
+	local abs_path = buf_path
+	local rel_path = vim.fn.fnamemodify(buf_path, ":.") -- relative to cwd
+	local filename = vim.fn.fnamemodify(buf_path, ":t") -- filename only
+	local choices = {
+		{ label = "Relative path (cwd)", value = rel_path },
+		{ label = "Absolute path", value = abs_path },
+		{ label = "Filename only", value = filename },
+	}
 
-  vim.ui.select(choices, {
-    prompt = "Copy buffer path:",
-    format_item = function(item)
-      return item.label .. "\n" .. item.value
-    end,
-  }, function(choice)
-    if choice and choice.value then
-      vim.fn.setreg("+", choice.value)
-      vim.notify("Copied to clipboard: " .. choice.value, vim.log.levels.INFO)
-    end
-  end)
+	vim.ui.select(choices, {
+		prompt = "Copy buffer path:",
+		format_item = function(item)
+			return item.label .. "\n" .. item.value
+		end,
+	}, function(choice)
+		if choice and choice.value then
+			vim.fn.setreg("+", choice.value)
+			vim.notify("Copied to clipboard: " .. choice.value, vim.log.levels.INFO)
+		end
+	end)
 end
 
---- Removes all trailing whitespace from the current buffer.
---- Preserves cursor position after removal.
---- Displays notification with count of lines modified.
-function M.remove_trailing_whitespace()
-  -- Save current cursor position
-  local cursor_pos = vim.api.nvim_win_get_cursor(0)
-  local line_count = vim.api.nvim_buf_line_count(0)
+--- Sets the markdown task checkbox state on the current line.
+--- Supports: todo [ ], done [x], doing [=], blocked [!], pending [~]
+--- If state is "done", moves the task line to the end of the file.
+--- @param state string The task state: "todo", "done", "doing", "blocked", or "pending"
+function M.set_markdown_task_state(state)
+	local state_map = {
+		todo = " ",
+		done = "x",
+		doing = "=",
+		blocked = "!",
+		pending = "~",
+	}
 
-  -- Count lines with trailing whitespace before removal
-  local modified_count = 0
-  for i = 1, line_count do
-    local line = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
-    if line and line:match("%s+$") then
-      modified_count = modified_count + 1
-    end
-  end
+	local checkbox = state_map[state]
+	if not checkbox then
+		vim.notify("Invalid state: " .. state, vim.log.levels.ERROR)
+		return
+	end
 
-  -- Remove trailing whitespace using substitute command
-  vim.cmd([[%s/\s\+$//e]])
+	local line = vim.api.nvim_get_current_line()
+	local row = vim.api.nvim_win_get_cursor(0)[1]
 
-  -- Restore cursor position
-  pcall(vim.api.nvim_win_set_cursor, 0, cursor_pos)
+	-- Match any markdown checkbox: - [ ], - [x], - [=], - [!], - [~]
+	local new_line = line:gsub("- %[.%]", "- [" .. checkbox .. "]", 1)
 
-  -- Notify user of changes
-  if modified_count > 0 then
-    vim.notify(string.format("Removed trailing whitespace from %d line(s)", modified_count), vim.log.levels.INFO)
-  else
-    vim.notify("No trailing whitespace found", vim.log.levels.INFO)
-  end
+	if new_line ~= line then
+		vim.api.nvim_buf_set_lines(0, row - 1, row, false, { new_line })
+
+		-- Save the buffer
+		vim.cmd("silent write")
+	else
+		vim.notify("Not on a markdown task line", vim.log.levels.WARN)
+	end
 end
 
-function M.run_shell_in_float(command, opts)
-  if not command then
-    vim.notify("No command provided", vim.log.levels.ERROR)
-    return
-  end
+--- Ensure markdown tasks have sequential IDs in the form: `- [ ] [ID: XX] ...`.
+--- Scans the current buffer for markdown task lines (lines that start with `- [<char>]`) and
+--- assigns or corrects a two-digit increasing ID for each task in order of appearance.
+--- Preserves cursor position and saves the buffer when changes are made.
+function M.fix_markdown_task_ids()
+	-- Preserve cursor
+	local cursor = vim.api.nvim_win_get_cursor(0)
 
-  local api = vim.api
-  opts = opts or {}
+	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+	local changed = 0
+	local task_index = 0
 
-  -- Default options
-  local title = opts.title or "Shell Command"
-  local width_ratio = opts.width or 0.8
-  local height_ratio = opts.height or 0.7
-  local cwd = opts.cwd or vim.fn.getcwd()
-  local close_on_exit = opts.close_on_exit or false
-  local post_command_func = opts.post_command_func
+	for i, line in ipairs(lines) do
+		-- Match a markdown task prefix like: optional space, "- [ ]" or "- [x]", capture prefix and trailing spacing
+		local prefix = line:match("^(%s*%- %[.%]%s*)")
+		if prefix then
+			task_index = task_index + 1
+			local new_id = string.format("%02d", task_index)
 
-  -- Calculate window dimensions
-  local width = math.floor(vim.o.columns * width_ratio)
-  local height = math.floor(vim.o.lines * height_ratio)
-  local row = math.floor((vim.o.lines - height) / 2)
-  local col = math.floor((vim.o.columns - width) / 2)
+			-- remainder after the prefix
+			local rest = line:sub(#prefix + 1)
 
-  -- Create a scratch buffer for the terminal
-  local buf = api.nvim_create_buf(false, true)
+			-- Check for existing ID and capture its number and the remainder after it
+			local existing_num, after = rest:match("^%[ID:%s*(%d+)%]%s*(.*)$")
+			if existing_num then
+				-- If the numeric value differs, replace with the new zero-padded id
+				if tonumber(existing_num) ~= tonumber(new_id) then
+					-- rebuild the line with the corrected id; preserve spacing between id and remainder
+					if after == "" then
+						lines[i] = prefix .. "[ID: " .. new_id .. "]"
+					else
+						lines[i] = prefix .. "[ID: " .. new_id .. "] " .. after
+					end
+					changed = changed + 1
+				end
+			else
+				-- No existing ID: insert one. If rest is empty or starts with space, don't add extra space.
+				if rest == "" then
+					lines[i] = prefix .. "[ID: " .. new_id .. "]"
+				elseif rest:match("^%s") then
+					lines[i] = prefix .. "[ID: " .. new_id .. "]" .. rest
+				else
+					lines[i] = prefix .. "[ID: " .. new_id .. "] " .. rest
+				end
+				changed = changed + 1
+			end
+		end
+	end
 
-  -- Configure floating window options
-  local win_opts = {
-    relative = "editor",
-    width = width,
-    height = height,
-    row = row,
-    col = col,
-    style = "minimal",
-    border = "rounded",
-    title = " " .. title .. " ",
-    title_pos = "center",
-  }
+	if changed > 0 then
+		vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+		pcall(vim.api.nvim_win_set_cursor, 0, cursor)
+		vim.cmd("silent write")
+		vim.notify(string.format("Updated %d task id(s)", changed), vim.log.levels.INFO)
+	else
+		vim.notify("No markdown tasks found or no changes needed", vim.log.levels.INFO)
+	end
+end
 
-  -- Open the floating window
-  local win = api.nvim_open_win(buf, true, win_opts)
+--- Adds a priority icon after a markdown checkbox `- [ ]`.
+--- Priority levels: critical (🔴), high (🟠), medium (🟡), low (🟢)
+--- @param priority string The priority level: "critical", "high", "medium", or "low"
+function M.set_markdown_priority(priority)
+	local priority_map = {
+		critical = "🔴",
+		high = "🟠",
+		medium = "🟡",
+		low = "🟢",
+	}
 
-  -- Set buffer options
-  vim.bo[buf].buftype = "nofile"
-  vim.bo[buf].bufhidden = "wipe"
-  vim.bo[buf].swapfile = false
+	local icon = priority_map[priority]
+	if not icon then
+		vim.notify("Invalid priority: " .. priority, vim.log.levels.ERROR)
+		return
+	end
 
-  -- Declare job_id here so it's available in the terminal callback
-  local job_id
+	local line = vim.api.nvim_get_current_line()
+	local row = vim.api.nvim_win_get_cursor(0)[1]
 
-  -- Open terminal in the buffer
-  local term_chan = api.nvim_open_term(buf, {
-    on_input = function(_, _, _, data)
-      -- Handle terminal input if needed - validate job_id and channel
-      if job_id and job_id > 0 then
-        -- Check if the job is still running before sending data
-        local job_info = vim.fn.jobwait({ job_id }, 0)
-        if job_info[1] == -1 then -- Job is still running
-          vim.fn.chansend(job_id, data)
-        end
-      end
-    end,
-  })
+	-- Match markdown checkbox pattern: optional whitespace, "- [any char]", optional icon
+	-- Capture: leading whitespace, checkbox content, and rest of line
+	local leading_space, checkbox, rest = line:match("^(%s*)- (%[.%])%s*[🔴🟠🟡🟢]?%s*(.*)")
 
-  -- Prepare command for execution
-  local cmd_args
-  if type(command) == "string" then
-    -- Use shell to execute string commands
-    cmd_args = { "zsh", "-c", command }
-  else
-    cmd_args = command
-  end
-
-  -- Start the command
-  job_id = vim.fn.jobstart(cmd_args, {
-    cwd = cwd,
-    on_stdout = function(_, data)
-      if data and term_chan and api.nvim_buf_is_valid(buf) and api.nvim_win_is_valid(win) then
-        for _, line in ipairs(data) do
-          if line ~= "" then
-            -- Safely send output to terminal with error handling
-            local success, _ = pcall(api.nvim_chan_send, term_chan, line .. "\r\n")
-            if not success then
-              -- Terminal channel might be closed, stop trying to send
-              break
-            end
-          end
-        end
-      end
-    end,
-    on_stderr = function(_, data)
-      if data and term_chan and api.nvim_buf_is_valid(buf) and api.nvim_win_is_valid(win) then
-        for _, line in ipairs(data) do
-          if line ~= "" then
-            -- Safely send error output to terminal with error handling
-            local success, _ = pcall(api.nvim_chan_send, term_chan, "\027[31m" .. line .. "\027[0m\r\n")
-            if not success then
-              -- Terminal channel might be closed, stop trying to send
-              break
-            end
-          end
-        end
-      end
-    end,
-    on_exit = function(_, exit_code)
-      if term_chan and api.nvim_buf_is_valid(buf) and api.nvim_win_is_valid(win) then
-        local status_msg = "\r\n"
-        if exit_code == 0 then
-          status_msg = status_msg .. "\027[32m✓ Command completed successfully\027[0m"
-        else
-          status_msg = status_msg .. "\027[31m✗ Command failed with exit code: " .. exit_code .. "\027[0m"
-        end
-
-        if not close_on_exit then
-          status_msg = status_msg .. "\r\n\r\nPress q or ESC to close"
-        end
-
-        -- Safely send the exit status message
-        local _, _ = pcall(api.nvim_chan_send, term_chan, status_msg .. "\r\n")
-
-        -- Switch to normal mode when command is done
-        vim.schedule(function()
-          if api.nvim_win_is_valid(win) and api.nvim_get_current_win() == win then
-            vim.cmd("stopinsert")
-          end
-        end)
-
-        -- Auto-close if requested
-        if close_on_exit then
-          vim.defer_fn(function()
-            if api.nvim_win_is_valid(win) then
-              api.nvim_win_close(win, true)
-              -- Call post_command_func if provided
-              if post_command_func and type(post_command_func) == "function" then
-                post_command_func()
-              end
-            end
-          end, 2000) -- Close after 2 seconds
-        else
-          -- Set up keymaps to close the window
-          local function close_window()
-            if api.nvim_win_is_valid(win) then
-              api.nvim_win_close(win, true)
-
-              -- Call post_command_func if provided
-              if post_command_func and type(post_command_func) == "function" then
-                post_command_func()
-              end
-            end
-          end
-
-          -- Set keymaps for normal mode only to avoid conflicts with terminal input
-          vim.keymap.set("n", "q", close_window, { buffer = buf, nowait = true })
-          vim.keymap.set("n", "<Esc>", close_window, { buffer = buf, nowait = true })
-        end
-      end
-    end,
-    stdout_buffered = false,
-    stderr_buffered = false,
-    pty = true, -- Enable PTY for better terminal behavior
-  })
-
-  -- Handle job start failure
-  if job_id <= 0 then
-    vim.notify("Failed to start command: " .. vim.inspect(command), vim.log.levels.ERROR)
-    if api.nvim_win_is_valid(win) then
-      api.nvim_win_close(win, true)
-      -- Call post_command_func if provided
-      if post_command_func and type(post_command_func) == "function" then
-        post_command_func()
-      end
-    end
-    return
-  end
-
-  -- Enter terminal mode
-  vim.cmd("startinsert")
-
-  return {
-    job_id = job_id,
-    term_chan = term_chan,
-    buffer = buf,
-    window = win,
-  }
+	if checkbox then
+		-- Reconstruct with priority icon
+		local new_line = leading_space .. "- " .. checkbox .. " " .. icon .. " " .. rest
+		vim.api.nvim_buf_set_lines(0, row - 1, row, false, { new_line })
+		vim.cmd("silent write")
+	else
+		vim.notify("Not on a markdown task line", vim.log.levels.WARN)
+	end
 end
 
 return M
